@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mode de paiement</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-4">
+
+    <label class="form-label">Mode de paiement</label>
+
+    <div class="mb-3">
+
+        <input type="radio" name="modepaiement" value="ESP"> Espèce
+        <input type="radio" name="modepaiement" value="CHK"> Chèque
+        <input type="radio" name="modepaiement" value="VIR"> Virement
+        <input type="radio" name="modepaiement" value="ADF"> A définir
+        <input type="radio" name="modepaiement" value="SOCIETE"> Société
+        <input type="radio" name="modepaiement" value="EBANK"> E-Banking
+        <input type="radio" name="modepaiement" value="DEF"> Défense
+
+    </div>
+
+    <!-- BANCAIRE -->
+    <div id="mode_bancaire" style="display:none;">
+        <h5>Informations bancaires</h5>
+
+        <input type="text" id="codebanque" class="form-control mb-2" placeholder="Code banque">
+        <input type="text" id="codeguichet" class="form-control mb-2" placeholder="Code guichet">
+        <input type="text" id="numerocompte" class="form-control mb-2" placeholder="Numéro de compte">
+        <input type="text" id="rib" class="form-control mb-2" placeholder="Clé RIB">
+
+        <div id="numero_complet" class="form-control bg-dark text-white text-center">
+            _____ - _____ - ___________ - __
+        </div>
+    </div>
+
+    <!-- MOBILE -->
+    <div id="mode_mobile" style="display:none;">
+        <h5>Paiement mobile</h5>
+        <input type="text" id="numMobile" class="form-control" placeholder="Numéro mobile">
+    </div>
+
+    <!-- DEFENSE -->
+    <div id="mode_defense" style="display:none;">
+        <h5>Défense</h5>
+        <input type="text" id="matricule" class="form-control" placeholder="Matricule">
+    </div>
+
+</div>
+
+<script>
+
+const radios = document.querySelectorAll('input[name="modepaiement"]');
+
+const modeBancaire = document.getElementById('mode_bancaire');
+const modeMobile = document.getElementById('mode_mobile');
+const modeDefense = document.getElementById('mode_defense');
+
+// Champs bancaires
+const codebanque = document.getElementById('codebanque');
+const codeguichet = document.getElementById('codeguichet');
+const numerocompte = document.getElementById('numerocompte');
+const rib = document.getElementById('rib');
+
+function resetAll() {
+    modeBancaire.style.display = 'none';
+    modeMobile.style.display = 'none';
+    modeDefense.style.display = 'none';
+
+    // enlever required partout
+    codebanque.required = false;
+    codeguichet.required = false;
+    numerocompte.required = false;
+    rib.required = false;
+}
+
+radios.forEach(radio => {
+    radio.addEventListener('change', function () {
+
+        resetAll();
+
+        if (this.value === 'VIR') {
+            modeBancaire.style.display = 'block';
+
+            // rendre obligatoire
+            codebanque.required = true;
+            codeguichet.required = true;
+            numerocompte.required = true;
+            rib.required = true;
+        }
+
+        if (this.value === 'EBANK') {
+            modeMobile.style.display = 'block';
+        }
+
+        if (this.value === 'DEF') {
+            modeDefense.style.display = 'block';
+        }
+
+        // ADF, CHK, SOCIETE, ESP → rien à afficher
+
+    });
+});
+
+</script>
+
+</body>
+</html>
