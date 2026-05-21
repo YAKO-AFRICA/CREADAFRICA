@@ -366,9 +366,11 @@ class ProductionController extends Controller
         $resultData = session()->get('adherent', []);
         $detailCountries = [];
         try {
-            $response = Http::withOptions(['timeout' => 60])->get(config('services.API_GET_COUNTRIES'));
+            $response = Http::withOptions(['timeout' => 60])->get(config('services.api_get_countries'));
             if ($response->successful()) {
                 $data = $response->json();
+
+                Log::info('Réponse de l\'API des pays : ', $data);
                 // Vérifie si la clé "countries" existe
                 if (isset($data['countries'])) {
                     $detailCountries = $data['countries'];
@@ -382,6 +384,7 @@ class ProductionController extends Controller
         } catch (\Exception $e) {
             Log::error('Exception lors de l\'appel à l\'API des pays : ' . $e->getMessage());
         }
+
 
         return view('productions.create.create', compact('product', 'villes', 'secteurActivites', 'professions', 'productGarantie', 'societes', 'agences', 'filliations', 'resultData', 'detailCountries'));
     }

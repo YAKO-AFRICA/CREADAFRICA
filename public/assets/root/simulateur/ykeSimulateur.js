@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+
     // Éléments du formulaire
     const form = document.getElementById("primeForm");
     const dateNaissanceInput = document.getElementById("dateNaissance");
@@ -60,6 +61,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Soumission du formulaire
     form.addEventListener("submit", function (e) {
+
+        alert("Le calcul des primes peut prendre quelques secondes. Veuillez patienter...");
         e.preventDefault();
 
         // Validation du formulaire

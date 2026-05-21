@@ -75,9 +75,9 @@
                                                 <option value="1250000">1 250 000 FCFA</option>
                                                 <option value="1500000">1 500 000 FCFA</option>
                                                 <option value="2000000">2 000 000 FCFA</option>
-                                                <option value="3000000">3 000 000 FCFA</option>
+                                                {{-- <option value="3000000">3 000 000 FCFA</option>
                                                 <option value="4000000">4 000 000 FCFA</option>
-                                                <option value="5000000">5 000 000 FCFA</option>
+                                                <option value="5000000">5 000 000 FCFA</option> --}}
                                             </select>
                                             <div class="input-group-text">FCFA</div>
                                         </div>

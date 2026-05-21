@@ -16,7 +16,7 @@
                                 <div class="input-group-text">
                                     <select class="form-select form-select-sm country-select" id="countryPrefix"
                                         aria-label="Indicatif Pays" required>
-                                        <option selected disabled value="">🌍 Pays</option>
+                                        <option selected value="225">🌍 CI</option>
                                         @foreach ($detailCountries as $item)
                                             @if ($item['phone_international_prefix'] == '225')
                                                 <option value="{{ $item['phone_international_prefix'] }}" selected>
