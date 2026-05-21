@@ -266,7 +266,7 @@ class BulletinController extends Controller
                 $finalFileName = $bulletinDir . $contrat->codeproduit .'_bulletin_'. $contrat->id . '.pdf';
             
                 // Enregistrer le PDF final
-                $finalPdf->Output($finalFileName, 'F');
+                // $finalPdf->Output($finalFileName, 'F');
             
                 // Supprimer le fichier temporaire du bulletin
                 unlink($bulletinFileName);
