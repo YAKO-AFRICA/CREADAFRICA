@@ -1,29 +1,21 @@
-
-
-
 document.getElementById("loanSimulatorForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
     const duree = parseInt(document.getElementById("loanDuration").value);
     const montant = parseFloat(document.getElementById("loanMontant").value);
     const dob = document.getElementById("dob").value;
-
     const resultat = document.getElementById("resultat");
-    console.log("DOB:", dob);
 
     // Vérifier si DOB est valide
     if (!dob) {
-        swal.fire({
-
+        Swal.fire({
             icon: "error",
             title: "Erreur !",
             text: "Veuillez renseigner votre date de naissance.",
             showConfirmButton: true,
             confirmButtonText: "OK",
             timer: 2000
-
-            })
-            .then(() => {
+        }).then(() => {
             window.location.reload();
         });
         return;
@@ -33,14 +25,14 @@ document.getElementById("loanSimulatorForm").addEventListener("submit", function
     const todayVerif = new Date();
     const birthDateverif = new Date(dob);
     if (birthDateverif > todayVerif) {
-        swal.fire({
+        Swal.fire({
             icon: 'error',
             title: 'Erreur',
             text: 'Veuillez renseigner une date de naissance valide.'
         }).then(() => {
             window.location.reload();
-
-        })
+        });
+        return;
     }
 
     // Calcul de l'âge
@@ -52,79 +44,99 @@ document.getElementById("loanSimulatorForm").addEventListener("submit", function
         age--;
     }
 
-    console.log("Âge calculé :", age);
+    let taux = null;
+    let message = "";
+    let prime = 0;
 
+    // Application de l'algorithme selon les règles fournies
+    if (age >= 18 && age <= 55) {
+        if (montant <= 30000000) {
+            if (duree >= 1 && duree <= 24) {
+                taux = 0.64 / 100;
+            } else if (duree >= 25 && duree <= 36) {
+                taux = 0.80 / 100;
+            } else if (duree >= 37 && duree <= 48) {
+                taux = 1.20 / 100;
+            } else if (duree >= 49 && duree <= 60) {
+                taux = 1.70 / 100;
+            } else {
+                message = "Contacter YAKO AFRICA";
+            }
+        } else {
+            message = "Contacter YAKO AFRICA";
+        }
+    } 
+    else if (age >= 56 && age <= 60) {
+        if (montant <= 10000000) {
+            if (duree >= 1 && duree <= 24) {
+                taux = 0.64 / 100;
+            } else if (duree >= 25 && duree <= 36) {
+                taux = 0.80 / 100;
+            } else {
+                message = "Contacter YAKO AFRICA";
+            }
+        } else {
+            message = "Contacter YAKO AFRICA";
+        }
+    } 
+    else {
+        message = "Age non éligible Contacter YAKO AFRICA";
+    }
 
-
-    // Vérification du montant max
-    if (montant > 30000000) {
+    // Affichage du résultat
+    if (message !== "") {
         resultat.innerHTML = `
-            <div class="alert alert-danger text-center fw-bold">
-                Veuillez contacter YAKO AFRICA pour les montants supérieurs à 30 000 000.
+            <div class="alert alert-warning text-center fw-bold">
+                ${message}
             </div>`;
         setTimeout(() => window.location.reload(), 5000);
         return;
     }
 
-    // Application des règles de taux
-    let taux = null;
-    if (age >= 18 && age <= 60 && duree >= 1 && duree <= 24) {
-        taux = 0.65 / 100;
-    } else if (age >= 18 && age <= 50 && duree >= 25 && duree <= 48) {
-        taux = 0.65 / 100;
-    } else {
+    // Calcul de la prime
+    if (taux !== null) {
+        prime = montant * taux;
+        const primeObseque = 0; // Garantie Yako obsèque désactivée
+        
+        // Affichage des résultats
+        document.getElementById('primeObseque').innerText = primeObseque.toLocaleString('fr-FR', { style: 'currency', currency: 'XAF' });
+        document.getElementById('prime').innerText = prime.toLocaleString('fr-FR', { style: 'currency', currency: 'XAF' });
+        document.getElementById('totalPremium').innerText = prime.toLocaleString('fr-FR', { style: 'currency', currency: 'XAF' });
+
         resultat.innerHTML = `
-            <div class="alert alert-warning text-center fw-bold">
-                Merci de contacter YAKO AFRICA pour ce type de prêt.
-            </div>`;
-        return;
+            <div class="alert alert-success py-2 animate__animated animate__fadeIn">
+                <i class="fas fa-check-circle me-2"></i>
+                Simulation calculée avec succès - Taux appliqué : ${(taux * 100).toFixed(2)}%
+            </div>
+        `;
+
+        if (prime > 10) {
+            document.getElementById("btnSouscrition").classList.remove("disabled");
+        }
+
+        // Envoi des données au backend
+        const data = {
+            duree: duree,
+            montant: montant,
+            dob: dob,
+            age: age,
+            prime: prime,
+            primeFinal: prime,
+            primeObseque: primeObseque,
+            taux: taux
+        };
+
+        fetch('/epret/store-simulation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.ok ? console.log('Simulation data stored successfully') : console.error('Failed to store simulation data'))
+        .catch(error => console.error('Error:', error));
     }
-
-    // Garantie Yako obsèque → désactivée / valeur fixe 0
-    const primeObseque = 0;
-    document.getElementById('primeObseque').innerText = primeObseque.toLocaleString('fr-FR', { style: 'currency', currency: 'XAF' });
-
-    // Calcul prime
-    const prime = montant * taux;
-    const primeFinal = prime + primeObseque;
-
-    // Affichage
-    document.getElementById('prime').innerText = prime.toLocaleString('fr-FR', { style: 'currency', currency: 'XAF' });
-    document.getElementById('totalPremium').innerText = primeFinal.toLocaleString('fr-FR', { style: 'currency', currency: 'XAF' });
-
-    resultat.innerHTML = `
-        <div class="alert alert-success py-2 animate__animated animate__fadeIn">
-            <i class="fas fa-check-circle me-2"></i>
-            Simulation calculée avec succès
-        </div>
-    `;
-
-    if (primeFinal > 10) {
-        document.getElementById("btnSouscrition").disabled = false;
-    }
-
-    // Envoi données backend
-   const data = {
-        duree: duree,
-        montant: montant,
-        dob: dob,
-        age: age,
-        prime: prime,
-        primeFinal: primeFinal,
-        primeObseque: primeObseque,
-    };
-
-
-    fetch('/epret/store-simulation', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        },
-        body: JSON.stringify(data),
-    })
-    .then(response => response.ok ? console.log('Simulation data stored successfully') : console.error('Failed to store simulation data'))
-    .catch(error => console.error('Error:', error));
 });
 
 function saveSimulationData(data) {

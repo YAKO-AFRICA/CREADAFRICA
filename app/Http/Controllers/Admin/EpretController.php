@@ -426,7 +426,12 @@ class EpretController extends Controller
 
                 DB::commit();
 
-                $bulletinData = $this->generateBulletinPret($idPret);
+                $dataParam=[
+                    'idPret' => $idPret,
+                    'idContrat' => $idContrat,
+                ];
+
+                $bulletinData = $this->generateBulletinPret($dataParam);
 
 
                 return response()->json([
@@ -450,14 +455,21 @@ class EpretController extends Controller
             }
         }
 
-        private function generateBulletinPret($idPret)
+        private function generateBulletinPret($dataParam)
         {
             try {
-                $pret = Pret::where('id', $idPret)->with('sante')->first();
+                $pret = Pret::where('id', $dataParam['idPret'])->with('sante')->first();
                 Log::info("pret trouver " . $pret);
                 if (!$pret) {
                     return response()->json(['success' => false, 'message' => 'Prêt non trouvé.'], 404);
                 }
+
+                $imageUrl = env('SIGN_API') . "api/get-signature/" . $dataParam['idContrat'] . "/E-SOUSCRIPTION";
+                Log::info("sign url : " . $imageUrl );
+
+                $imageData = file_get_contents($imageUrl);
+                $base64Image = base64_encode($imageData);
+                $imageSrc = 'data:image/png;base64,'.$base64Image;
 
                 // Options pour DomPDF
                 $options = new Options();
