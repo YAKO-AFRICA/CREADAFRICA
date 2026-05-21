@@ -464,12 +464,12 @@ class EpretController extends Controller
                     return response()->json(['success' => false, 'message' => 'Prêt non trouvé.'], 404);
                 }
 
-                $imageUrl = env('SIGN_API') . "api/get-signature/" . $dataParam['idContrat'] . "/E-SOUSCRIPTION";
-                Log::info("sign url : " . $imageUrl );
+                // $imageUrl = env('SIGN_API') . "api/get-signature/" . $dataParam['idContrat'] . "/E-SOUSCRIPTION";
+                // Log::info("sign url : " . $imageUrl );
 
-                $imageData = file_get_contents($imageUrl);
-                $base64Image = base64_encode($imageData);
-                $imageSrc = 'data:image/png;base64,'.$base64Image;
+                // $imageData = file_get_contents($imageUrl);
+                // $base64Image = base64_encode($imageData);
+                // $imageSrc = 'data:image/png;base64,'.$base64Image;
 
                 // Options pour DomPDF
                 $options = new Options();
