@@ -315,8 +315,6 @@
 
                         <label for="nom">BON POUR AUTORISATION A L'ASSURANCE ADHERENT (signature précédée de la mention LU et APPROUVE)</label>
 
-                        
-
                     </div>
 
                 </div>

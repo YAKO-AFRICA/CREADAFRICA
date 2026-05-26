@@ -47,10 +47,10 @@
                                     <div class="col-md-6">
                                         <label class="form-label">Périodicité</label>
                                         <select name="codePeriodicite" id="codePeriodicite" class="form-select" required>
-                                            <option value="M">Mensuel</option>
-                                            <option value="T">Trimestriel</option>
-                                            <option value="S">Semestriel</option>
-                                            <option value="A">Annuel</option>
+                                            <option value="M">Mensuelle</option>
+                                            <option value="T">Trimestrielle</option>
+                                            <option value="S">Semestrielle</option>
+                                            <option value="A">Annuelle</option>
                                         </select>
                                     </div>
 
