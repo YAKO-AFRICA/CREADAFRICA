@@ -102,7 +102,7 @@
 
                         <div class="name" style="position: relative; font-size: 12px; margin-bottom: 10px; height: 12px;">
                             <label for="" style="position: absolute; left: 0;"><strong>Nom et Prénoms :</strong></label>
-                            <span style="position: absolute; right: 60;">{{ $pret->adherent->nom }} {{ $pret->adherent->prenom }}</span>
+                            <span style="position: absolute; right: 60;">{{ $pret->adherent->nom }} {{ Str::limit($pret->adherent->prenom, 18, '') }}</span>
                         </div>
 
                         <div class="bithday" style="position: relative; font-size: 12px; margin-bottom: 10px; height: 12px;">

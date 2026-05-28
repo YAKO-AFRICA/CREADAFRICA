@@ -6,27 +6,53 @@
     <title>Formulaire de souscription YAKO ETERNITE</title>
 </head>
 <body>
+
     <style>
-        input {
-            font-size: 20px;
-            color: #000;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-size: 12px;
-        }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-size: 12px;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            padding-left: 35px;
-            padding-right: 35px;
-            padding-top: 30px;
-            padding-bottom: 30px;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        padding: 30px 35px;
+    }
 
-        .chechbox {
+    .header {
+        width: 100%;
+        overflow: hidden; /* important pour clear float */
+    }
+
+    .logo-left {
+        float: left;
+        width: 25%;
+    }
+
+    .logo-right {
+        float: right;
+        width: 25%;
+        text-align: right;
+    }
+
+    .title-center {
+        margin: 0 auto;
+        width: 50%;
+        text-align: center;
+        background: #747171;
+        color: #fff;
+        height: 55px;
+        line-height: 55px; /* centre vertical sans flex */
+        font-weight: bold;
+    }
+
+    .logo-left img,
+    .logo-right img {
+        width: 100px;
+    }
+
+    .chechbox {
             border: 1px solid black;
             color: #fff;
             max-width: 3px !important;
@@ -34,31 +60,36 @@
             font-size: 9px;
             margin-right: 5px;
         }
-    </style>
+</style>
 
     <div class="a4-container">
 
         <section>
-            <div class="container1_1 row" style="width: 100%">
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr>
 
-                <div class="logo col-4" style="width: 25%; float: left">
-    
-                    <img src="data:image/jpg;base64,{{ base64_encode(file_get_contents(public_path('root/images/logo.png'))) }}" alt="Logo" style="width: 100px">
-    
-                </div>
-    
-                <div style="width: 75%; font-size: 12px; font-weight: bold; text-align: center; background: #747171; color: #fff; height: 55px; display: flex; justify-content: center; align-items: center; float: right">
-    
-                    <center class="title" style="text-align: center; align-items: center; margin-top: 15px">
-    
-                        <h2 class="text-uppercase" style="font-size: 15px">BULLETIN DE SOUSCRIPTION YKE</h2>
-    
-                    </center>
-    
-                </div>
-    
-            </div>
-        </section>
+            <!-- LOGO GAUCHE -->
+            <td style="width: 25%; text-align: left; vertical-align: middle;">
+                <img src="data:image/jpg;base64,{{ base64_encode(file_get_contents(public_path('root/images/logo.png'))) }}"
+                     style="width: 100px;">
+            </td>
+
+            <!-- TITRE CENTRÉ -->
+            <td style="width: 50%; text-align: center; background: #747171; color: #fff; font-weight: bold; height: 55px; vertical-align: middle;">
+                <h2 style="font-size: 15px; text-transform: uppercase; margin: 0;">
+                    BULLETIN DE SOUSCRIPTION CRED YAKO Eternité
+                </h2>
+            </td>
+
+            <!-- LOGO DROIT -->
+            <td style="width: 25%; text-align: right; vertical-align: middle;">
+                <img src="data:image/jpg;base64,{{ base64_encode(file_get_contents(public_path('logos/CREADAFRICA.png'))) }}"
+                     style="width: 100px;">
+            </td>
+
+        </tr>
+    </table>
+</section>
 
         <section>
             <CENTER><strong>N° : YAKO AFRICA ASSURANCE-YKE-{{ $contrat->numBullettin ?? "" }}</strong></CENTER>
@@ -66,7 +97,8 @@
 
         <section style="width: 100%; margin-top: 15px;">
             <div style="width: 100%; text-align: center;">
-                <div style="width: 33%; float: left;"><strong>Produit</strong> :{{ $contrat->libelleproduit ?? ""}}</div>
+                {{-- <div style="width: 33%; float: left;"><strong>Produit</strong> :{{ $contrat->libelleproduit ?? ""}}</div> --}}
+                <div style="width: 33%; float: left;"><strong>Produit</strong> : <span style="text-transform: uppercase;">CRED YAKO Eternité</span></div>
                 <div style="width: 33%; float: left;"><strong>Conseiller</strong> : {{ $contrat->nomagent ?? ""}}</div>
                 <div style="width: 33%; float: left;"><strong>Agence</strong> : {{ $contrat->user->membre->nomagence ?? ""}}</div>
             </div>
@@ -213,13 +245,13 @@
     
                     <div style="width: 45%; float: left; border: 1px solid #000; display: table-cell; padding: 5px">
                         <div class="terme">
-                            <u>Au terme du contrat :</u> <span>{{ $contrat->beneficiaireauterme ?? "" }}</span>
+                            <u>Au terme du contrat :</u> <span>{{ $contrat->beneficiaireauterme ?? "Adherent" }}</span>
                         </div>
                     </div>
                 
                     <div style="width: 50%; float: right; border: 1px solid #000; display: table-cell; padding: 5px">
-                        <div class="terme">
-                            <u>En cas de décès avant terme du contrat :</u> <span>{{ $contrat->beneficiaireaudeces ?? "" }}</span>
+                        <div class="terme" style="text-transform: Capitalize;">
+                            <u >En cas de décès avant le terme du contrat :</u> <span>{{ $contrat->beneficiaireaudeces ?? "" }}</span>
                         </div>
                     </div>
                 
@@ -346,7 +378,7 @@
                             <tr>
                                 <td style="padding: 8px;">{{ $contrat->modepaiement ?? "" }}</td>
                                 <td style="text-align: center; padding: 8px;">{{ $contrat->codeguichet ?? "" }}</td>
-                                <td style="text-align: center; padding: 8px;">{{ $contrat->organisme ?? "" }}</td>
+                                <td style="text-align: center; padding: 8px;">{{ $contrat->organisme ?? "CREADAFRICA" }}</td>
                                 <td style="text-align: center; padding: 8px;">{{ $contrat->numerocompte ?? "" }}</td>
                             </tr>
                         </tbody>

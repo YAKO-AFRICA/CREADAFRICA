@@ -102,7 +102,7 @@ class BulletinController extends Controller
    
 
 
-    public function generate(Request $request, $id)
+    public function generatee(Request $request, $id)
     {
 
         DB::beginTransaction();
@@ -266,7 +266,7 @@ class BulletinController extends Controller
                 $finalFileName = $bulletinDir . $contrat->codeproduit .'_bulletin_'. $contrat->id . '.pdf';
             
                 // Enregistrer le PDF final
-                // $finalPdf->Output($finalFileName, 'F');
+                $finalPdf->Output($finalFileName, 'S');
             
                 // Supprimer le fichier temporaire du bulletin
                 unlink($bulletinFileName);
@@ -297,6 +297,280 @@ class BulletinController extends Controller
             ]);
         }
     }
+
+    public function generate(Request $request, $id)
+{
+    DB::beginTransaction();
+
+    try {
+
+        $contrat = Contrat::find($id);
+
+        if (!$contrat) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'type' => 'error',
+                'urlback' => '',
+                'message' => "Contrat introuvable !",
+                'code' => 404,
+            ]);
+        }
+
+        $pret = $contrat->pret;
+
+        // =========================
+        // GENERATION QR CODE
+        // =========================
+
+        $renderer = new ImageRenderer(
+            new RendererStyle(200),
+            new SvgImageBackEnd()
+        );
+
+        $qrContent = url("production/showQrCode/" . $contrat->id);
+
+        $writer = new Writer($renderer);
+
+        $qrCodeImage = $writer->writeString($qrContent);
+
+        $qrCodeBase64 = 'data:image/png;base64,' . base64_encode($qrCodeImage);
+
+        // =========================
+        // RECUPERATION SIGNATURE
+        // =========================
+
+        $imageUrl = env('SIGN_API') . "api/get-signature/" . $id . "/E-SOUSCRIPTION";
+
+        $imageSrc = null;
+
+        try {
+
+            $response = Http::timeout(5)->get($imageUrl);
+
+            if ($response->successful()) {
+
+                $data = $response->json();
+
+                if (isset($data['error']) && $data['error'] === true) {
+
+                    Log::info('Signature non trouvée pour le contrat ID: ' . $contrat->id);
+
+                } else {
+
+                    $imageData = $response->body();
+
+                    $base64Image = base64_encode($imageData);
+
+                    $imageSrc = 'data:image/png;base64,' . $base64Image;
+                }
+
+            } else {
+
+                Log::error(
+                    'Erreur HTTP lors de l\'appel de l\'API signature.',
+                    $response->json()
+                );
+            }
+
+        } catch (\Exception $e) {
+
+            Log::error(
+                'Exception lors de la récupération de la signature : ' . $e->getMessage()
+            );
+        }
+
+        // =========================
+        // GENERATION PDF BULLETIN
+        // =========================
+
+        if ($contrat->codeproduit == "loyemp") {
+
+            $pdf = Pdf::loadView('epret.components.bulletin.adhesion', [
+                'pret' => $pret,
+                'contrat' => $contrat,
+                'qrCodeBase64' => $qrCodeBase64,
+                'imageSrc' => $imageSrc
+            ]);
+
+            $cguFile = public_path('root/cgu/CguLoyemp.pdf');
+
+        } elseif ($contrat->codeproduit == "YKE_2018") {
+
+            $pdf = PDF::loadView('productions.components.bullettin.ykeBulletin', [
+                'contrat' => $contrat,
+                'qrCodeBase64' => $qrCodeBase64,
+                'imageSrc' => $imageSrc
+            ]);
+
+            $cguFile = public_path('root/cgu/cg_yke.pdf');
+
+        } elseif ($contrat->codeproduit == "YKE_2008") {
+
+            $pdf = PDF::loadView('productions.components.bullettin.ykeBulletin', [
+                'contrat' => $contrat,
+                'qrCodeBase64' => $qrCodeBase64,
+                'imageSrc' => $imageSrc
+            ]);
+
+            $cguFile = public_path('root/cgu/cg_yke.pdf');
+
+        } elseif ($contrat->codeproduit == "CADENCE") {
+
+            $pdf = PDF::loadView('productions.components.bullettin.Cadencebulletin', [
+                'contrat' => $contrat,
+                'qrCodeBase64' => $qrCodeBase64,
+                'imageSrc' => $imageSrc
+            ]);
+
+            $cguFile = public_path('root/cgu/cadenceCgu.pdf');
+
+        } elseif ($contrat->codeproduit == "PFA_IND") {
+
+            $pdf = PDF::loadView('productions.components.bullettin.pfaINDbulletin', [
+                'contrat' => $contrat,
+                'qrCodeBase64' => $qrCodeBase64,
+                'imageSrc' => $imageSrc
+            ]);
+
+            $cguFile = public_path('root/cgu/cg_yke.pdf');
+
+        } elseif ($contrat->codeproduit == "DOIHOO") {
+
+            $pdf = PDF::loadView('productions.components.bullettin.Doihoobulletin', [
+                'contrat' => $contrat,
+                'qrCodeBase64' => $qrCodeBase64,
+                'imageSrc' => $imageSrc
+            ]);
+
+            $cguFile = public_path('root/cgu/doihoo_cgu.pdf');
+
+        } elseif ($contrat->codeproduit == "CAD_EDUCPLUS") {
+
+            $pdf = PDF::loadView('productions.components.bullettin.CadenceEduPlusbulletin', [
+                'contrat' => $contrat,
+                'qrCodeBase64' => $qrCodeBase64,
+                'imageSrc' => $imageSrc,
+            ]);
+
+            $cguFile = public_path('root/cgu/CADENCEpLUS.pdf');
+
+        } elseif ($contrat->codeproduit == "LPREVO") {
+
+            $pdf = PDF::loadView('productions.components.bullettin.LprevoBulletin', [
+                'contrat' => $contrat,
+                'qrCodeBase64' => $qrCodeBase64,
+                'imageSrc' => $imageSrc,
+            ]);
+
+            $cguFile = public_path('root/cgu/CGLPREVO.pdf');
+
+        } else {
+
+            $pdf = PDF::loadView('productions.components.bullettin.basicBulletin', [
+                'contrat' => $contrat,
+                'qrCodeBase64' => $qrCodeBase64,
+                'imageSrc' => $imageSrc
+            ]);
+
+            $cguFile = public_path('root/cgu/CGPLanggnant.pdf');
+        }
+
+        // =========================
+        // DOSSIER TEMPORAIRE
+        // =========================
+
+        $bulletinDir = public_path('documents/bulletin/');
+
+        if (!is_dir($bulletinDir)) {
+            mkdir($bulletinDir, 0777, true);
+        }
+
+        // =========================
+        // FICHIER TEMPORAIRE BULLETIN
+        // =========================
+
+        $bulletinFileName = $bulletinDir . 'temp_bulletin_' . $contrat->id . '.pdf';
+
+        $pdf->save($bulletinFileName);
+
+        // =========================
+        // FUSION DES PDF
+        // =========================
+
+        $finalPdf = new Fpdi();
+
+        // BULLETIN
+        $bulletinPageCount = $finalPdf->setSourceFile($bulletinFileName);
+
+        for ($pageNo = 1; $pageNo <= $bulletinPageCount; $pageNo++) {
+
+            $finalPdf->AddPage();
+
+            $tplIdx = $finalPdf->importPage($pageNo);
+
+            $finalPdf->useTemplate($tplIdx);
+        }
+
+        // CGU
+        $cguPageCount = $finalPdf->setSourceFile($cguFile);
+
+        for ($pageNo = 1; $pageNo <= $cguPageCount; $pageNo++) {
+
+            $finalPdf->AddPage();
+
+            $tplIdx = $finalPdf->importPage($pageNo);
+
+            $finalPdf->useTemplate($tplIdx);
+        }
+
+        // =========================
+        // GENERATION PDF EN MEMOIRE
+        // =========================
+
+        $pdfContent = $finalPdf->Output('', 'S');
+
+        // =========================
+        // SUPPRESSION TEMPORAIRE
+        // =========================
+
+        if (file_exists($bulletinFileName)) {
+            unlink($bulletinFileName);
+        }
+
+        DB::commit();
+
+        // =========================
+        // RETOUR PDF
+        // =========================
+
+        return response($pdfContent)
+            ->header('Content-Type', 'application/pdf')
+            ->header(
+                'Content-Disposition',
+                'inline; filename="' .
+                $contrat->codeproduit .
+                '_bulletin_' .
+                $contrat->id .
+                '.pdf"'
+            );
+
+    } catch (\Throwable $th) {
+
+        DB::rollBack();
+
+        Log::error('Erreur génération bulletin : ' . $th->getMessage());
+
+        return response()->json([
+            'type' => 'error',
+            'urlback' => '',
+            'message' => 'Erreur système !',
+            'details' => $th->getMessage(),
+            'code' => 500,
+        ]);
+    }
+}
 
     public function dowloadYkeBulletinEtCGU($produit)
     {
