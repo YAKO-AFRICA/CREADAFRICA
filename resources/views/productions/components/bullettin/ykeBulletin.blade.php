@@ -22,7 +22,7 @@
 
     .header {
         width: 100%;
-        overflow: hidden; /* important pour clear float */
+        overflow: hidden;
     }
 
     .logo-left {
@@ -43,7 +43,7 @@
         background: #747171;
         color: #fff;
         height: 55px;
-        line-height: 55px; /* centre vertical sans flex */
+        line-height: 55px;
         font-weight: bold;
     }
 
@@ -53,388 +53,399 @@
     }
 
     .chechbox {
-            border: 1px solid black;
-            color: #fff;
-            max-width: 3px !important;
-            max-height: 3px !important;
-            font-size: 9px;
-            margin-right: 5px;
-        }
-</style>
+        border: 1px solid black;
+        color: #fff;
+        max-width: 3px !important;
+        max-height: 3px !important;
+        font-size: 9px;
+        margin-right: 5px;
+    }
+
+    /* Alignement colonnes adhérent */
+    .col-left,
+    .col-right {
+        width: 48%;
+        vertical-align: top;
+    }
+    .col-left { float: left; }
+    .col-right { float: right; }
+
+    .field-row {
+        display: table;
+        width: 100%;
+        margin-bottom: 6px;
+    }
+    .field-label {
+        display: table-cell;
+        white-space: nowrap;
+        font-weight: bold;
+        padding-right: 4px;
+        vertical-align: top;
+    }
+    .field-value {
+        display: table-cell;
+        width: 100%;
+        border-bottom: 1px dotted #aaa;
+        vertical-align: top;
+        padding-bottom: 1px;
+    }
+
+    /* Clearfix générique */
+    .clearfix::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    </style>
 
     <div class="a4-container">
 
+        <!-- EN-TÊTE -->
         <section>
-    <table style="width: 100%; border-collapse: collapse;">
-        <tr>
-
-            <!-- LOGO GAUCHE -->
-            <td style="width: 25%; text-align: left; vertical-align: middle;">
-                <img src="data:image/jpg;base64,{{ base64_encode(file_get_contents(public_path('root/images/logo.png'))) }}"
-                     style="width: 100px;">
-            </td>
-
-            <!-- TITRE CENTRÉ -->
-            <td style="width: 50%; text-align: center; background: #747171; color: #fff; font-weight: bold; height: 55px; vertical-align: middle;">
-                <h2 style="font-size: 15px; text-transform: uppercase; margin: 0;">
-                    BULLETIN DE SOUSCRIPTION CRED YAKO Eternité
-                </h2>
-            </td>
-
-            <!-- LOGO DROIT -->
-            <td style="width: 25%; text-align: right; vertical-align: middle;">
-                <img src="data:image/jpg;base64,{{ base64_encode(file_get_contents(public_path('logos/CREADAFRICA.png'))) }}"
-                     style="width: 100px;">
-            </td>
-
-        </tr>
-    </table>
-</section>
-
-        <section>
-            <CENTER><strong>N° : YAKO AFRICA ASSURANCE-YKE-{{ $contrat->numBullettin ?? "" }}</strong></CENTER>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="width: 25%; text-align: left; vertical-align: middle;">
+                        <img src="data:image/jpg;base64,{{ base64_encode(file_get_contents(public_path('root/images/logo.png'))) }}"
+                             style="width: 100px;">
+                    </td>
+                    <td style="width: 50%; text-align: center; background: #747171; color: #fff; font-weight: bold; vertical-align: middle; padding: 10px 5px;">
+                        <h2 style="font-size: 13px; text-transform: uppercase; margin: 0; padding: 0;">
+                            BULLETIN DE SOUSCRIPTION CRED'YAKO ETERNITE
+                        </h2>
+                    </td>
+                    <td style="width: 25%; text-align: right; vertical-align: middle;">
+                        <img src="data:image/jpg;base64,{{ base64_encode(file_get_contents(public_path('logos/CREADAFRICA.png'))) }}"
+                             style="width: 100px;">
+                    </td>
+                </tr>
+            </table>
         </section>
 
-        <section style="width: 100%; margin-top: 15px;">
-            <div style="width: 100%; text-align: center;">
-                {{-- <div style="width: 33%; float: left;"><strong>Produit</strong> :{{ $contrat->libelleproduit ?? ""}}</div> --}}
-                <div style="width: 33%; float: left;"><strong>Produit</strong> : <span style="text-transform: uppercase;">CRED YAKO Eternité</span></div>
-                <div style="width: 33%; float: left;"><strong>Conseiller</strong> : {{ $contrat->nomagent ?? ""}}</div>
-                <div style="width: 33%; float: left;"><strong>Agence</strong> : {{ $contrat->user->membre->nomagence ?? ""}}</div>
+        <!-- NUMÉRO BULLETIN -->
+        <section style="margin-top: 8px;">
+            <p style="text-align: center;"><strong>N° : YAKO AFRICA ASSURANCE-YKE-{{ $contrat->numBullettin ?? "" }}</strong></p>
+        </section>
+
+        <!-- PRODUIT / CONSEILLER / AGENCE -->
+        <section style="width: 100%; margin-top: 10px;" class="clearfix">
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="width: 33%;"><strong>Produit</strong> : <span style="text-transform: uppercase;">CRED'YAKO ETERNITE</span></td>
+                    <td style="width: 33%; text-align: center;"><strong>Conseiller</strong> : {{ $contrat->nomagent ?? ""}}</td>
+                    <td style="width: 33%; text-align: right;"><strong>Agence</strong> : {{ $contrat->user->membre->nomagence ?? ""}}</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- SECTION 1 : ADHÉRENT -->
+        <section style="margin-top: 10px; font-family: Arial, sans-serif;">
+
+            <div style="background-color: #747171; padding: 4px 6px; margin-bottom: 4px;">
+                <h4 style="color: #fff; font-size: 12px; margin: 0;">1. ADHERENT :</h4>
             </div>
-            <div style="clear: both;"></div>
-        </section>
 
- 
-        <section style="margin-top: 10px; margin-bottom: 0px; padding: 5px; border: 1px solid #ccc; font-family: Arial, sans-serif;">
-            <div class="container-fluid">
-        
-                <!-- Titre -->
-                <div class="adherent" style="border: 1px solid #ccc; background-color: #747171; height: 10px; padding: 3px;">
-                    <h4 style="color: #fff; font-size: 12px; margin: 0;">1. ADHERENT :</h4>
-                </div>
-        
-                <!-- Contenu -->
-                <div class="content1" style="margin-top: 0px;">
-        
-                    <!-- Colonne gauche -->
-                    <div style="width: 48%; float: left; margin-bottom: 0;">
-                        <div class="nom" style="margin-bottom: 5px;">
-                            <label><strong>Nom :</strong>{{ $contrat->adherent->nom ?? ""}}</label>
-                        </div>
-        
-                        <div class="prenom" style="margin-bottom: 5px;">
-                            <label><strong>Prénom :</strong> {{ $contrat->adherent->prenom ?? ""}}</label>
-                        </div>
-        
-                        <div class="birthday" style="margin-bottom: 5px;">
-                            <label><strong>Date de naissance :</strong> {{ $contrat->adherent->datenaissance ?? ""}}</label>
-                        </div>
-        
-                        <div class="domicile" style="margin-bottom: 5px;">
-                            <label><strong>Domicile :</strong> {{ $contrat->adherent->lieuresidence ?? ""}}</label>
-                        </div>
-        
-                        <div class="profession" style="margin-bottom: 5px;">
-                            <label><strong>Profession :</strong> {{ $contrat->adherent->profession ?? ""}}</label>
-                        </div>
-        
-                        <div class="numeropiece" style="margin-bottom: 5px;">
-                            <label><strong>CNI/Passport/Attestation :</strong>{{ $contrat->adherent->numeropiece ?? ""}}</label>
-                        </div>
-        
-                        <div class="civilite" style="margin-bottom: 5px;">
-                            <label><strong>Genre :</strong> {{ $contrat->adherent->civilite ?? ""}}</label>
-                        </div>
+            <div class="clearfix" style="padding-top: 6px">
+
+                <!-- Colonne gauche -->
+                <div class="col-left">
+
+                    <div class="field-row">
+                        <span class="field-label">Nom :</span>
+                        <span class="field-value">{{ $contrat->adherent->civilite ?? ""}} .{{ $contrat->adherent->nom ?? ""}}</span>
                     </div>
-        
-                    <!-- Colonne droite -->
-                    <div style="width: 48%; float: right; margin-bottom: 0;">
-                        <div class="lieunaissance" style="margin-bottom: 10px;">
-                            <label><strong>Lieu de naissance :</strong> {{ $contrat->adherent->lieunaissance ?? ""}}</label>
-                        </div>
-        
-                        <div class="postal" style="margin-bottom: 10px;">
-                            <label><strong>Email :</strong> {{ $contrat->adherent->email ?? ""}}</label>
-                        </div>
-        
-                        <div class="employeur" style="margin-bottom: 10px;">
-                            <label><strong>Employeur :</strong> {{ $contrat->adherent->employeur ?? ""}}</label>
-                        </div>
-        
-                        <div class="telephone" style="margin-bottom: 10px;">
-                            <label><strong>Téléphone / Cell :</strong> {{ $contrat->adherent->telephone ?? ""}}.</label>
-                        </div>
-        
-                        <div class="situation" style="margin-bottom: 10px;">
-                            <label><strong>Situation Matrimoniale :</strong></label>
-                            <div>
-                                @if ($contrat->adherent->situationMatrimoniale == 'CELIB')
-                                    <span>Célibataire</span>
-                                @elseif ($contrat->adherent->situationMatrimoniale == 'union_libre')
-                                    <span>Union libre</span>
-                                @elseif ($contrat->adherent->situationMatrimoniale == 'MARIE')
-                                    <span>Marié(e)</span>
-                                @elseif ($contrat->adherent->situationMatrimoniale == 'DIVOR')
-                                    <span>Divorcé(e)</span>
-                                @elseif ($contrat->adherent->situationMatrimoniale == 'VEUVE')
-                                    <span>Veuf(ve)</span>
-                                @else
-                                    <span>Non defini</span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-        
-                    <!-- Clear pour éviter les flottements -->
-                    <div style="clear: both;"></div>
-        
-                </div>
-        
-            </div>
-        </section>
-        
-        
 
-        <section>
-            <div class="adherent" style="border: 1px solid #ccc; background-color: #747171; height: 10px; padding: 3px;">
-                <h4 style="color: #fff; font-size: 12px; margin: 0;">2. ASSURES  :</h4>
+                    <div class="field-row">
+                        <span class="field-label">Prénom :</span>
+                        <span class="field-value">{{ $contrat->adherent->prenom ?? ""}}</span>
+                    </div>
+
+                    <div class="field-row">
+                        <span class="field-label">Date de naissance :</span>
+                        <span class="field-value">{{ Carbon\Carbon::parse($contrat->adherent->datedenaissance)->format('d/m/Y') ?? ""}}</span>
+                    </div>
+
+                    
+
+                    {{-- <div class="field-row">
+                        <span class="field-label">Profession :</span>
+                        <span class="field-value">{{ $contrat->adherent->profession ?? ""}}</span>
+                    </div> --}}
+
+                    <div class="field-row">
+                        <span class="field-label">CNI/Passport/Attestation :</span>
+                        <span class="field-value">{{ $contrat->adherent->numeropiece ?? ""}}</span>
+                    </div>
+
+                    {{-- <div class="field-row">
+                        <span class="field-label">Genre :</span>
+                        <span class="field-value">{{ $contrat->adherent->civilite ?? ""}}</span>
+                    </div> --}}
+
+                </div>
+
+                <!-- Colonne droite -->
+                <div class="col-right">
+
+                    <div class="field-row">
+                        <span class="field-label">Lieu de naissance :</span>
+                        <span class="field-value">{{ $contrat->adherent->lieunaissance ?? ""}}</span>
+                    </div>
+
+                    <div class="field-row">
+                        <span class="field-label">Domicile :</span>
+                        <span class="field-value">{{ $contrat->adherent->lieuresidence ?? ""}}</span>
+                    </div>
+
+                    {{-- <div class="field-row">
+                        <span class="field-label">Email :</span>
+                        <span class="field-value">{{ $contrat->adherent->email ?? ""}}</span>
+                    </div>
+
+                    <div class="field-row">
+                        <span class="field-label">Employeur :</span>
+                        <span class="field-value">{{ $contrat->adherent->employeur ?? ""}}</span>
+                    </div> --}}
+
+                    <div class="field-row">
+                        <span class="field-label">Téléphone / Cell :</span>
+                        <span class="field-value">{{ $contrat->adherent->telephone ?? ""}}</span>
+                    </div>
+
+                    <div class="field-row">
+                        <span class="field-label">Situation Matrimoniale :</span>
+                        <span class="field-value">
+                            @if ($contrat->adherent->situationMatrimoniale == 'CELIB')
+                                Célibataire
+                            @elseif ($contrat->adherent->situationMatrimoniale == 'union_libre')
+                                Union libre
+                            @elseif ($contrat->adherent->situationMatrimoniale == 'MARIE')
+                                Marié(e)
+                            @elseif ($contrat->adherent->situationMatrimoniale == 'DIVOR')
+                                Divorcé(e)
+                            @elseif ($contrat->adherent->situationMatrimoniale == 'VEUVE')
+                                Veuf(ve)
+                            @else
+                                Non defini
+                            @endif
+                        </span>
+                    </div>
+
+                </div>
+
+            </div><!-- /clearfix -->
+
+        </section>
+
+        <!-- SECTION 2a : ASSURÉS -->
+        <section style="margin-top: 12px;">
+
+            <div style="background-color: #747171; padding: 4px 6px; margin-bottom: 10px;">
+                <h4 style="color: #fff; font-size: 12px; margin: 0;">2. ASSURES :</h4>
             </div>
-    
-            <div class="content1">
-    
-                <table border="1" cellpadding="5" cellspacing="0" width="100%">
+
+            <table border="1" cellpadding="5" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                <thead style="background-color: #f2f2f2;">
                     <tr>
-                        <th>Nom</th>
-                        <th>Filiation</th>
-                        <th>Né(e) le</th>
-                        <th>Lieu naissance</th>
-                        <th>Résidence</th>
+                        <th style="text-align: center; padding: 5px;">Nom</th>
+                        <th style="text-align: center; padding: 5px;">Filiation</th>
+                        <th style="text-align: center; padding: 5px;">Né(e) le</th>
+                        <th style="text-align: center; padding: 5px;">Lieu naissance</th>
+                        <th style="text-align: center; padding: 5px;">Résidence</th>
                     </tr>
+                </thead>
+                <tbody>
                     @foreach ($contrat->assures as $assure)
                     <tr>
-                        <td>{{ $assure->nom }}</td>
-                        <td>{{ $assure->prenom }}</td>
-                        <td>{{ $assure->datenaissance }}</td>
-                        <td>{{ $assure->lieunaissance }}</td>
-                        <td>{{ $assure->lieuresidence }}</td>
+                        <td style="text-align: center; padding: 5px;">{{ $assure->nom }}</td>
+                        <td style="text-align: center; padding: 5px;">{{ $assure->prenom }}</td>
+                        <td style="text-align: center; padding: 5px;">{{ Carbon\Carbon::parse($assure->datenaissance)->format('d/m/Y') }}</td>
+                        <td style="text-align: center; padding: 5px;">{{ $assure->lieunaissance }}</td>
+                        <td style="text-align: center; padding: 5px;">{{ $assure->lieuresidence }}</td>
                     </tr>
                     @endforeach
-                    {{-- <tr>
-                        <tr>
-                            <td>azss</td>
-                            <td>ffffff</td>
-                            <td>02010200</td>
-                            <td>rfklo</td>
-                            <td>bvnnf</td>
-                        </tr>
-                    </tr> --}}
-                    
-                </table>
-                
-            </div>
+                </tbody>
+            </table>
+
         </section>
 
-        <section style="margin-top: 10px">
-            <div class="adherent" style="border: 1px solid #ccc; background-color: #747171; height: 10px; padding: 3px;">
-                <h4 style="color: #fff; font-size: 12px; margin: 0;">2. BENEFICIAIRES  :</h4>
+        <!-- SECTION 2b : BÉNÉFICIAIRES -->
+        <section style="margin-top: 15px;">
+
+            <div style="background-color: #747171; padding: 4px 6px; margin-bottom: 10px;">
+                <h4 style="color: #fff; font-size: 12px; margin: 0;">2. BENEFICIAIRES :</h4>
             </div>
-    
-            <div class="content1">
-                <div class="idente" style="width: 100%; display: table; margin-bottom: 10px">
-    
-                    <div style="width: 45%; float: left; border: 1px solid #000; display: table-cell; padding: 5px">
-                        <div class="terme">
-                            <u>Au terme du contrat :</u> <span>{{ $contrat->beneficiaireauterme ?? "Adherent" }}</span>
-                        </div>
-                    </div>
-                
-                    <div style="width: 50%; float: right; border: 1px solid #000; display: table-cell; padding: 5px">
-                        <div class="terme" style="text-transform: Capitalize;">
-                            <u >En cas de décès avant le terme du contrat :</u> <span>{{ $contrat->beneficiaireaudeces ?? "" }}</span>
-                        </div>
-                    </div>
-                
-                </div>
-                
-    
-                <table border="1" cellpadding="5" cellspacing="0" width="100%">
+
+            <!-- Bénéficiaires au terme / au décès -->
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px;">
+                <tr>
+                    <td style="width: 48%; border: 1px solid #000; padding: 5 5 5 8px; vertical-align: top;">
+                        <u>Au terme du contrat :</u>&nbsp;{{ $contrat->beneficiaireauterme ?? "Adherent" }}
+                    </td>
+                    <td style="width: 4%;"></td>
+                    <td style="width: 48%; border: 1px solid #000; padding: 5 5 5 8px; vertical-align: top; text-transform: capitalize;">
+                        <u>En cas de décès avant le terme du contrat :</u>&nbsp;{{ $contrat->beneficiaireaudeces ?? "" }}
+                    </td>
+                </tr>
+            </table>
+
+            <table border="1" cellpadding="5" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                <thead style="background-color: #f2f2f2;">
                     <tr>
-                        <th>Nom</th>
-                        <th>Filiation</th>
-                        <th>Né(e) le</th>
-                        <th>Lieu naissance</th>
-                        <th>Telephone</th>
+                        <th style="text-align: center; padding: 5px;">Nom</th>
+                        <th style="text-align: center; padding: 5px;">Filiation</th>
+                        <th style="text-align: center; padding: 5px;">Né(e) le</th>
+                        <th style="text-align: center; padding: 5px;">Lieu naissance</th>
+                        <th style="text-align: center; padding: 5px;">Telephone</th>
                     </tr>
+                </thead>
+                <tbody>
                     @foreach ($contrat->beneficiaires as $item)
                     <tr>
-                        <td>{{ $item->nom ?? "" }} {{ $item->prenom ?? "" }}</td>
-                        <td>{{ $item->filiation ?? "" }}</td>
-                        <td>{{ $item->datenaissance ?? "" }}</td>
-                        <td>{{ $item->lieunaissance ?? "" }}</td>
-                        <td>{{ $item->mobile ?? "" }}</td>
+                        <td style="text-align: center; padding: 5px;">{{ $item->nom ?? "" }} {{ $item->prenom ?? "" }}</td>
+                        <td style="text-align: center; padding: 5px;">{{ $item->filiation ?? "" }}</td>
+                        <td style="text-align: center; padding: 5px;">{{ $item->datenaissance ?? "" }}</td>
+                        <td style="text-align: center; padding: 5px;">{{ $item->lieunaissance ?? "" }}</td>
+                        <td style="text-align: center; padding: 5px;">{{ $item->mobile ?? "" }}</td>
                     </tr>
                     @endforeach
-                </table>
-                
-                
-            </div>
+                </tbody>
+            </table>
+
         </section>
 
+        <!-- SECTION 3 : GARANTIES & PRIMES -->
+        <section style="margin-top: 15px;">
 
-        <section style="margin-top: 20px; padding: 5px; border: 1px solid #ccc; font-family: Arial, sans-serif;">
-            <div class="container">
-        
-                <!-- Titre de la section -->
-              
-                <div class="adherent" style="border: 1px solid #ccc; background-color: #747171; height: 10px; padding: 3px;">
-                    <h4 style="color: #fff; font-size: 12px; margin: 0;">3. GARANTIE & PRIMES :</h4>
-                </div>
-        
-                <!-- Contenu avec le tableau -->
-                <div class="content1" style="margin-top: 10px; padding: 10px; border: 1px solid #ddd;">
-        
-                    <table border="1" cellpadding="5" cellspacing="0" width="100%" style="border-collapse: collapse;">
-                        <thead style="background-color: #f2f2f2;">
+            <div style="background-color: #747171; padding: 4px 6px; margin-bottom: 10px;">
+                <h4 style="color: #fff; font-size: 12px; margin: 0;">3. GARANTIE &amp; PRIMES :</h4>
+            </div>
+
+            <div style="padding: 6px; border: 1px solid #ddd;">
+
+                <table border="1" cellpadding="5" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                    <thead style="background-color: #f2f2f2;">
+                        <tr>
+                            <th style="text-align: left; padding: 6px;">Garantie</th>
+                            <th style="text-align: center; padding: 6px;">Option/Capital</th>
+                            <th style="text-align: center; padding: 6px;">Prime</th>
+                            <th style="text-align: center; padding: 6px;">Périodicité</th>
+                            <th style="text-align: center; padding: 6px;">Total Primes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($contrat->assures as $assure)
+                            @foreach ($assure->garanties as $item)
                             <tr>
-                                <th style="text-align: left; padding: 8px;">Garantie</th>
-                                <th style="text-align: center; padding: 8px;">Option/Capital</th>
-                                <th style="text-align: center; padding: 8px;">Prime</th>
-                                <th style="text-align: center; padding: 8px;">Périodicité</th>
-                                <th style="text-align: center; padding: 8px;">Total Primes</th>
+                                <td style="padding: 6px;">{{ $item->monlibelle ?? "" }}</td>
+                                <td style="text-align: center; padding: 6px;">{{ $item->capitalgarantie ?? "" }}</td>
+                                <td style="text-align: center; padding: 6px;">{{ $item->prime ?? "" }}</td>
+                                <td style="text-align: center; padding: 6px;">{{ $contrat->periodicite ?? "" }}</td>
+                                <td style="text-align: center; padding: 6px;">{{ $item->primetotal ?? "" }}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($contrat->assures as $assure)   
-                                @foreach ($assure->garanties as $item)
-                                <tr>
-                                    <td style="padding: 8px;">{{ $item->monlibelle ?? "" }}</td>
-                                    <td style="text-align: center; padding: 8px;">{{ $item->capitalgarantie ?? "" }}</td>
-                                    <td style="text-align: center; padding: 8px;">{{ $item->prime ?? "" }}</td>
-                                    <td style="text-align: center; padding: 8px;">{{ $contrat->periodicite ?? "" }}</td>
-                                    <td style="text-align: center; padding: 8px;">{{ $item->primetotal ?? "" }}</td>
-                                </tr>
-                                @endforeach
                             @endforeach
-                        </tbody>
-                        
-                        <tfoot>
-                            <tr style="background-color: #e0e0e0; font-weight: bold;">
-                                <td colspan="4" style="text-align: right; padding: 8px;">TOTAL PRIME (FcFA) :</td>
-                                <td style="text-align: center; padding: 8px;">{{ $contrat->prime ?? "" }}</td>
-                            </tr>
-                            
-                        </tfoot>
-                    </table>
-                    <div class="content1">
-    
-                        <table border="1"  width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Capital souscrit</th>
-                                    <th>Date effet</th>
-                                    <th>Durée de cotisation</th>
-                                    {{-- <th>Echeance</th> --}}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{{ $contrat->capital ?? "" }}</td>
-                                    <td>{{ $contrat->dateeffet ?? "" }}</td>
-                                    <td>5 ans</td>
-                                    {{-- <td>{{ $contrat->echeance ?? "" }}</td> --}}
-                                </tr>
-                            </tbody>
-                        </table>
-                        
-                    </div>
-        
-                </div>
-        
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr style="background-color: #e0e0e0; font-weight: bold;">
+                            <td colspan="4" style="text-align: right; padding: 6px;">TOTAL PRIME (FcFA) :</td>
+                            <td style="text-align: center; padding: 6px;">{{ $contrat->prime ?? "" }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <table border="1" cellpadding="5" cellspacing="0" width="100%" style="border-collapse: collapse; margin-top: 6px;">
+                    <thead style="background-color: #f2f2f2;">
+                        <tr>
+                            <th style="text-align: center; padding: 6px;">Capital souscrit</th>
+                            <th style="text-align: center; padding: 6px;">Date effet</th>
+                            <th style="text-align: center; padding: 6px;">Durée de cotisation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center; padding: 6px;">{{ number_format($contrat->capital, 0, ',', ' ') ?? "" }}</td>
+                            <td style="text-align: center; padding: 6px;">{{ Carbon\Carbon::parse($contrat->dateeffet)->format('d/m/Y') ?? "" }}</td>
+                            <td style="text-align: center; padding: 6px;">5 ans</td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
+
         </section>
 
-        <section style="margin-top: 20px; padding: 5px; border: 1px solid #ccc; font-family: Arial, sans-serif;">
-            <div class="container">
+        <!-- SECTION 4 : PAIEMENT DES PRIMES -->
+        <section style="margin-top: 12px;">
 
-
-                <div class="adherent" style="border: 1px solid #ccc; background-color: #747171; height: 10px; padding: 3px;">
-                    <h4 style="color: #fff; font-size: 12px; margin: 0;">4. PAIEMENT DES PRIMES :</h4>
-                </div>
-        
-                <!-- Contenu avec le tableau -->
-                <div class="content1" style="margin-top: 5px; padding: 5px; border: 1px solid #ddd;">
-        
-                    <table border="1" cellpadding="5" cellspacing="0" width="100%" style="border-collapse: collapse;">
-                        <thead style="background-color: #f2f2f2;">
-                            <tr>
-                                <th style="text-align: left; padding: 8px;">Mode de paiement</th>
-                                <th style="text-align: center; padding: 8px;">Guichet</th>
-                                <th style="text-align: center; padding: 8px;">Organisme</th>
-                                <th style="text-align: center; padding: 8px;">N° Compte</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="padding: 8px;">{{ $contrat->modepaiement ?? "" }}</td>
-                                <td style="text-align: center; padding: 8px;">{{ $contrat->codeguichet ?? "" }}</td>
-                                <td style="text-align: center; padding: 8px;">{{ $contrat->organisme ?? "CREADAFRICA" }}</td>
-                                <td style="text-align: center; padding: 8px;">{{ $contrat->numerocompte ?? "" }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-        
-                </div>
-        
+            <div style="background-color: #747171; padding: 4px 6px; margin-bottom: 4px;">
+                <h4 style="color: #fff; font-size: 12px; margin: 0;">4. PAIEMENT DES PRIMES :</h4>
             </div>
+
+            <div style="padding: 6px; border: 1px solid #ddd;">
+                <table border="1" cellpadding="5" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                    <thead style="background-color: #f2f2f2;">
+                        <tr>
+                            <th style="text-align: left; padding: 6px;">Mode de paiement</th>
+                            <th style="text-align: center; padding: 6px;">Guichet</th>
+                            <th style="text-align: center; padding: 6px;">Organisme</th>
+                            <th style="text-align: center; padding: 6px;">N° Compte</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 6px;">{{ $contrat->modepaiement ?? "" }}</td>
+                            <td style="text-align: center; padding: 6px;">{{ $contrat->codeguichet ?? "" }}</td>
+                            <td style="text-align: center; padding: 6px;">{{ $contrat->organisme ?? "CREADAFRICA" }}</td>
+                            <td style="text-align: center; padding: 6px;">{{ $contrat->numerocompte ?? "" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
         </section>
 
-
-        <section style="margin-top: 30px">
-            <div class="identiteee" style="width: 100%">
-                <div style="width: 48%; float: left; border: 1px solid #000; padding: 5px; display: flex; justify-content: space-between; align-items: center;">
-
-                    <div class="sign-yako">
-
-                        <span>Reservé à YAKO AFRICA Assurances Vie</span>
+        <!-- SIGNATURES -->
+        <section style="margin-top: 20px;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <!-- Signature YAKO -->
+                    <td style="width: 48%; border: 1px solid #000; padding: 8px; vertical-align: middle;">
+                        <div style="margin-bottom: 4px;">Reservé à YAKO AFRICA Assurances Vie</div>
                         <div>
-                            <img src="data:image/jpg;base64,{{ base64_encode(file_get_contents(public_path('root/images/Signature_Dta.jpg'))) }}" alt="Logo" style="width: 200px">
+                            <img src="data:image/jpg;base64,{{ base64_encode(file_get_contents(public_path('root/images/Signature_Dta.jpg'))) }}" alt="Logo" style="width: 200px;">
                         </div>
-                    </div>
-                </div>
+                    </td>
 
-                <div style="width: 48%; min-height: 127px; float: right; border: 1px solid #000; padding: 5px; display: flex; justify-content: space-between; align-items: center;">
+                    <td style="width: 4%;"></td>
 
-                    <div class="nom">
+                    <!-- Signature conseiller / souscripteur -->
+                    <td style="width: 48%; min-height: 127px; border: 1px solid #000; padding: 8px; vertical-align: top;">
 
-                        <label for="nom"><strong>Nom du conseiller :</strong> {{ Auth::user()->membre->nom ?? ""}} {{ Auth::user()->membre->prenom ?? ""}}</label>
-
-                        <br><br>
-
-                        <label for="prenom">Signature du Souscripteur</label>
-
-                        <div style="width: 100%;">
-                            <div style="text-align: center; width: 45%; float: left">
-                                <img src="{{ $qrCodeBase64 }}" alt="QR Code de vérification" style="width: 60px; height: 60px;">
-                            </div>
-                            <div style="text-align: center; width: 45%; float: right">
-                                @if ($imageSrc != null)
-                                    <img src="{{ $imageSrc }}" alt="QR Code de vérification" style="width: 55px; height: 55px;">
-                                @endif
-                            </div>
+                        <div style="margin-bottom: 6px;">
+                            <strong>Nom du conseiller :</strong>&nbsp;{{ Auth::user()->membre->nom ?? ""}} {{ Auth::user()->membre->prenom ?? ""}}
                         </div>
 
-                    </div>
+                        <div style="margin-bottom: 8px;">Signature du Souscripteur</div>
 
-                </div>
-            </div>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="width: 50%; text-align: center; vertical-align: middle;">
+                                    <img src="{{ $qrCodeBase64 }}" alt="QR Code de vérification" style="width: 60px; height: 60px;">
+                                </td>
+                                <td style="width: 50%; text-align: center; vertical-align: middle;">
+                                    @if ($imageSrc != null)
+                                        <img src="{{ $imageSrc }}" alt="Signature" style="width: 55px; height: 55px;">
+                                    @endif
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+            </table>
         </section>
-
-       
 
     </div>
 
 </body>
-
 </html>
-
