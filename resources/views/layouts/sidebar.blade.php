@@ -37,7 +37,7 @@
         <div class="overflow-auto " style="height: calc(90vh - 180px)">
 
             @can('Voir e-souscription')
-                <strong><li class="menu-label">E-Souscription</li></strong>
+                <strong><li class="menu-label">E-Souscriptions</li></strong>
                 {{-- <li>
                     <a href="javascript(void(0))" data-bs-toggle="modal" data-bs-target="#dowloadBullModal" >
                         <div class="parent-icon">
@@ -72,7 +72,7 @@
                 @endcan
             @endcan
 
-            <li class="menu-label ">E-Prêt</li>
+            <li class="menu-label ">E-Prêts</li>
             <li>
                 <a href="{{ route('epret.simulateur') }}">
                     <div class="parent-icon"><i class="bx bx-dollar-circle fs-5"></i>

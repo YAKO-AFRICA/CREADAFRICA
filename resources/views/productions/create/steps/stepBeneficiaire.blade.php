@@ -12,7 +12,7 @@
                 <div class="card" style="width: 80%">
                     <div class="card-body" disabled>
                         <small>
-                            Pas de beneficiaire au terme du contrat pour ce produit
+                            Béneficiaire Principal : L'Adhérent
                         </small>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
 
 
         <div class="col-12 col-lg-6">
-            <label for="" class="form-label">En cas de décès avant le terme</label>
+            <label for="" class="form-label">En cas de décès de l’adhérent avant le terme du contrat</label>
             <div class="card" style="width: 80%">
                 <div class="card-body">
                     <div class="form-check">

@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnReset = document.getElementById("btn-reset");
 
     let hommagePrime = 0;
-    const fraie_adhesion = 7500;
+    const fraie_adhesion = 3000;
     let simulationData = null;
 
 
@@ -31,6 +31,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         ageInput.value = age;
     });
+
+    
+
+
 
     // Gestion de l'affichage du champ prime senior
     garantieSeniorCheck.addEventListener("change", function() {
@@ -69,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const fraisAdhesion = 7500;
+        const fraisAdhesion = 3000;
         let formData = new FormData(this);
         let totalPrime = fraisAdhesion;
         let totalPurePrime = 0;
@@ -297,10 +301,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // Enregistrement dans sessionStorage
         sessionStorage.setItem("simulationData", JSON.stringify(simulationData));
 
-        if (simulationData.infoSimulation.primepricipale > 10) {
-            btnSouscription.classList.remove("btn-inactif");
-            btnSouscription.disabled = false;
-        }
+        // if (simulationData.infoSimulation.primepricipale > 10) {
+        //     btnSouscription.classList.remove("btn-inactif");
+        //     btnSouscription.disabled = false;
+        // }
 
         // Envoi au serveur
         fetch("{{ route('storeSimulationPrime') }}", {

@@ -217,15 +217,15 @@
     </div>
 
     <fieldset class="border p-3">
-        <legend class="float-none w-auto px-2"><small>Contact</small></legend>
+        <legend class="float-none w-auto px-2"><small>Contacts</small></legend>
 
         <div class="row my-3">
             <div class="col-6">
-                <label for="">Telephone <span class="text-danger">*</span></label>
-                <input type="tel" name="telephone" class="form-control" id="contactprincipal" placeholder="00 00 00 00" required minlength="10" maxlength="14" autocomplete="on" required>
+                <label for="">Mobile <span class="text-danger">*</span></label>
+                <input type="tel" name="telephone" class="form-control" id="contactprincipal" placeholder="00 00 00 00" required minlength="10" maxlength="10" autocomplete="on" required>
             </div>
             <div class="col-6">
-                <label for="">Mobile</label>
+                <label for="">Télephone</label>
                 <input type="tel" name="mobile" class="form-control" id="contactsecondaire" placeholder="00 00 00 00" minlength="10" maxlength="14" autocomplete="on">
             </div>
         </div>
@@ -254,7 +254,7 @@
             <div class="col-12 col-lg-4">
                 <label class="form-label">Contact <span class="text-danger">*</span></label><br>
                 <div class="input-group mb-3">
-                    <input type="text" name="contactpersonneressource" class="form-control" aria-label="Text input with select" required minlength="10" maxlength="14">
+                    <input type="text" name="contactpersonneressource" class="form-control" aria-label="Text input with select" required minlength="10" maxlength="10">
                 </div>
             </div>
         </div>
@@ -267,7 +267,7 @@
             <div class="col-12 col-lg-4">
                 <label class="form-label">Contact </label><br>
                 <div class="input-group mb-3">
-                    <input type="text" name="contactpersonneressource2" class="form-control" aria-label="Text input with select" maxlength="10">
+                    <input type="text" name="contactpersonneressource2" class="form-control" aria-label="Text input with select" minlength="10" maxlength="10">
                 </div>
             </div>
         </div>

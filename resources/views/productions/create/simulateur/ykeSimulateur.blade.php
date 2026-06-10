@@ -28,7 +28,7 @@
     <div class="row">
         <div class="col-sm-12 col-md-8">
             <div class="card p-4">
-                <h4 class="text-center text-uppercase">Simulateur de prime</h4>
+                <h4 class="text-center text-uppercase">Simulateur de la prime d’assurance</h4>
                 <fieldset>
                     <legend class="text-center w-auto float-none px-2 "><small>Données de simulation</small></legend>
 
@@ -159,7 +159,7 @@
         <div class="col-sm-12 col-md-4">
            <div class="card shadow-lg border-0 rounded-lg">
                 <div class="card-header text-white text-center py-3">
-                    <h5 class="text-uppercase mb-0">Résultats du simulateur</h5>
+                    <h5 class="text-uppercase mb-0">RÉSULTATS DE LA SIMULATION</h5>
                 </div>
 
                 <div class="card-body">
@@ -168,7 +168,7 @@
                         <table class="table table-bordered table-striped">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Garantie</th>
+                                    <th>Garanties</th>
                                     <th>Prime</th>
                                     <th>Capital</th>
                                 </tr>
@@ -180,7 +180,7 @@
                         <table class="table">
                             <tr>
                                 <td><strong class="text-uppercase fs-6">Frais d'adhésion </strong><small class="text-muted text-danger">(payable une seule fois)</small></td>
-                                <td><span class="text-success">+</span> <strong> {{ number_format(7500, 0, ',', ' ')}}</strong> FCFA</td>
+                                <td><span class="text-success">+</span> <strong> {{ number_format(3000, 0, ',', ' ')}}</strong> FCFA</td>
                             </tr>
                         </table>
                         <div class="ribbon">Prime Totale (F CFA)</div>
@@ -196,7 +196,7 @@
                     </div>
                 </div>
 
-                <a href="{{ route('prod.create',$product->CodeProduit) }}" id="btn-souscription" class="btn btn-primary btn btn-inactif">Souscrire</a>
+                <a href="{{ route('prod.create',$product->CodeProduit) }}" id="btn-souscription" class="btn btn-primary btn btn-inacti">Souscrire</a>
             </div>
         </div>
     </div>
@@ -209,6 +209,28 @@
     // document.addEventListener("DOMContentLoaded", function () {
     //     sessionStorage.removeItem("simulationData");
     // });
+
+    const dateNaissanceInput = document.getElementById("dateNaissance");
+    dateNaissanceInput.addEventListener("blur", function() {
+        const dateNaissanceSaisie = new Date(this.value);
+        const today = new Date();
+        let age = today.getFullYear() - dateNaissanceSaisie.getFullYear();
+        const m = today.getMonth() - dateNaissanceSaisie.getMonth();
+
+        if (m < 0 || (m === 0 && today.getDate() < dateNaissanceSaisie.getDate())) {
+            age--;
+        }
+        if (age > 75) {
+            swal.fire({
+                title: "Âge non éligible",
+                text: "L'âge maximum pour souscrire à ce produit est de 75 ans.",
+                icon: "warning",
+                showCancelButton: false,
+                confirmButtonText: "OK"
+            });
+            this.value = "";
+        }
+    });
 </script>
 
 @endsection

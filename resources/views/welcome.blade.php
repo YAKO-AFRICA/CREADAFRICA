@@ -341,7 +341,7 @@
                         <i class="bi bi-building me-1"></i> {{ Auth::user()->membre->nomagence ?? ''}}
                     </small>
                     <small class="text-white-70">
-                        <i class="bi bi-globe me-1"></i> YAKO AFRICA ASSURANCE VIE - AGENCE {{ Auth::user()->membre->codeagence ?? ''}}
+                        <i class="bi bi-globe me-1"></i> YAKO AFRICA ASSURANCES VIE - AGENCE {{ Auth::user()->membre->codeagence ?? ''}}
                     </small>
                 </div>
             </div>
@@ -393,7 +393,7 @@
                     <i class="bi bi-file-text fs-2 text-primary"></i>
                 </div>
                 <div class="kpi-value" id="countSaisie">0</div>
-                <div class="text-secondary small">Total en saisie</div>
+                <div class="text-secondary small">Total des contrats saisis</div>
                 <div class="trend-up mt-2">
                     <i class="bi bi-arrow-up-short"></i> <span id="coutSaisieWeek"></span>  cette semaine
                 </div>
@@ -405,7 +405,7 @@
                     <i class="bi bi-send fs-2 text-purple"></i>
                 </div>
                 <div class="kpi-value" id="countContratTransmis">0</div>
-                <div class="text-secondary small">Saisies transmises</div>
+                <div class="text-secondary small">Contrats transmis</div>
                 <div class="trend-up mt-2">
                     <i class="bi bi-arrow-up-short"></i> + <span id="countContratTransmisActifYear">0</span> Actif en traitement
                 </div>
@@ -417,7 +417,7 @@
                     <i class="bi bi-check-circle fs-2 text-success"></i>
                 </div>
                 <div class="kpi-value" id="countContratAccepteYear">0</div>
-                <div class="text-secondary small">Saisies acceptées</div>
+                <div class="text-secondary small">Contrats acceptés</div>
                 <div class="trend-up mt-2">
                     <i class="bi bi-arrow-up-short"></i> taux <span id="tauxAcceptPercent">0</span>%
                 </div>
@@ -429,7 +429,7 @@
                     <i class="bi bi-x-circle fs-2 text-danger"></i>
                 </div>
                 <div class="kpi-value" id="countRejetesYear">0</div>
-                <div class="text-secondary small">Saisies rejetées</div>
+                <div class="text-secondary small">Contrats rejetés</div>
                 <div class="trend-down mt-2">
                     <i class="bi bi-arrow-down-short"></i> taux <span id="tauxRejetPercent">0</span>%
                 </div>
@@ -445,7 +445,7 @@
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div>
                             <h6 class="fw-bold mb-1">Activité de production</h6>
-                            <small class="text-secondary"><span id="dynamiqTimeTransmis"></span> — transmise vs acceptées</small>
+                            <small class="text-secondary"><span id="dynamiqTimeTransmis"></span> — transmis vs acceptés</small>
                         </div>
                         <div class="btn-group btn-group-sm" role="group">
                             <button id="btnMonth" class="btn btn-outline-secondary btnTransmisClick">Année</button>
@@ -455,11 +455,11 @@
                     <div class="d-flex gap-4 mb-3">
                         <div class="d-flex align-items-center gap-2">
                             <div style="width: 12px; height: 12px; background: #3b82f6; border-radius: 3px;"></div>
-                            <span class="small">Transmises</span>
+                            <span class="small">Transmis</span>
                         </div>
                         <div class="d-flex align-items-center gap-2">
                             <div style="width: 12px; height: 12px; background: #10b981; border-radius: 3px;"></div>
-                            <span class="small">Acceptées</span>
+                            <span class="small">Acceptés</span>
                         </div>
                     </div>
                     <div class="chart-container">

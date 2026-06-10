@@ -34,6 +34,8 @@
                     <div class="card-header">
                         @if ($product->codeproduit == 'LPREVO')
                             <h6 class="text-center text-capitalize">  {{ strtoupper('YAKO SOUTRA') }} </h6>
+                        @elseif($product->codeproduit == 'YKE_2018')
+                            <h6 class="text-center text-capitalize">  {{ strtoupper('CRED’YAKO ETERNITE') }} </h6>
                         @else
                             <h6 class="text-center text-capitalize">  {{ strtoupper($product->libelleproduit ?? 'N/A') }} </h6>
                         @endif

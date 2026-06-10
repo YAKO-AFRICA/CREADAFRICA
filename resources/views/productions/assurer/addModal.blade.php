@@ -12,7 +12,7 @@
                     </div>
                     <div class="card-body">
                         <form action="" method="" id="AddAssureForm">
-                            <div class="col-12 col-lg-6">
+                            <div class="12">
                                 <label for="civiliteAssur" class="form-label">Civilité <span class="star">*</span></label>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input civiliteAssur" type="radio" name="civiliteAssur" id="inlineRadio1" value="Madame" autocomplete="off" required>
@@ -64,7 +64,7 @@
                                         <option value="" selected>Sélectionner le lieu</option> <!-- Option vide pour le placeholder -->
 
                                         @foreach($villes as $ville)
-                                            <option value="{{ $ville['MonLibelle'] }}">{{ $ville['MonLibelle'] }}</option>
+                                            <option value="{{ $ville['libelleVillle'] }}">{{ $ville['libelleVillle'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -109,7 +109,7 @@
                                         <option selected value="">Sélectionner le lieu</option> <!-- Option vide pour le placeholder -->
 
                                         @foreach($villes as $ville)
-                                            <option value="{{ $ville['MonLibelle'] }}">{{ $ville['MonLibelle'] ?? ''}}</option>
+                                            <option value="{{ $ville['libelleVillle'] }}">{{ $ville['libelleVillle'] ?? ''}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -130,7 +130,7 @@
                                 <div class="col-12 col-lg-6">
                                     <label class="form-label">Télephone</label><br>
                                     <div class="input-group mb-3">
-                                        <input type="tel" name="mobileAssur" id="mobileAssur" class="form-control" placeholder="ex: +225 0701020304" minlength="10" maxlength="15" >
+                                        <input type="tel" name="mobileAssur" id="mobileAssur" class="form-control" placeholder="ex: +225 0701020304" minlength="10" maxlength="10" >
                                     </div>
 
                                     @error('mobileAssur')
