@@ -28,7 +28,7 @@
                             <select id="lieunaissanceBenef" class="form-select">
                                 <option selected value="">Sélectionner le lieu</option>
                                 @foreach($villes as $ville)
-                                    <option value="{{ $ville->MonLibelle }}">{{ $ville->MonLibelle ?? '' }}</option>
+                                    <option value="{{ $ville['libelleVillle'] }}">{{ $ville['libelleVillle'] ?? ''}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -39,19 +39,22 @@
                             <select id="lieuresidenceBenef" class="form-select">
                                 <option selected value="">Sélectionner le lieu</option>
                                 @foreach($villes as $ville)
-                                    <option value="{{ $ville->MonLibelle }}">{{ $ville->MonLibelle ?? '' }}</option>
+                                    <option value="{{ $ville['libelleVillle'] }}">{{ $ville['libelleVillle'] ?? ''}}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <select id="lienParenteBenef" class="form-select" name="lienParenteBenef">
-                            <option selected value="" disabled>Sélectionner le lien de Parenté</option>
+                        <div class="col-12 col-lg-6">
+                            <label for="lienParenteBenef" class="form-label"> Lien de Parenté</label>
+                            <select id="lienParenteBenef" class="form-select" name="lienParenteBenef">
+                                <option selected value="" disabled class="from-control">Sélectionner le lien de Parenté</option>
 
-                            @foreach ($filliations as $item)
-                                @if(!empty($item->MonLibelle))
-                                    <option value="{{ $item->CodeFiliation }}">{{ $item->MonLibelle ?? '' }}</option>
-                                @endif
-                            @endforeach
-                        </select>
+                                @foreach ($filliations as $item)
+                                    @if(!empty($item->MonLibelle))
+                                        <option value="{{ $item->CodeFiliation }}" class="from-control">{{ $item->MonLibelle ?? '' }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
 
                     <div class="row g-3 mb-3">
