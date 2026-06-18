@@ -416,7 +416,7 @@ const COL_GROUPS = [
 
 const COLUMNS = [
     // --- Identification ---
-    { key:'numeropolice',          label:'N° Police',               visible:true,  locked:true  },
+    { key:'id',          label:'N° Id',               visible:true,  locked:true  },
     { key:'codeproposition',       label:'Code proposition',        visible:false, locked:false },
     { key:'idproposition',         label:'ID proposition',          visible:false, locked:false },
     { key:'numBullettin',          label:'N° Bulletin',             visible:false, locked:false },
@@ -546,11 +546,12 @@ function updateKPIs() {
 
 // ===== RENDU CELLULE par clé =====
 function renderCell(c, key) {
+    const nomComplet = `${c.adherent.prenom || ''} ${c.adherent.nom || ''}`.trim();
     switch(key) {
         case 'numeropolice':
-            return `<span style="font-weight:600;color:var(--yako-green)">${c.numeropolice || c.codeproposition || '—'}</span>`;
+            return `<span style="font-weight:600;color:var(--yako-green)">${c.id || '—'}</span>`;
         case 'nomsouscipteur':
-            return c.nomsouscipteur || '—';
+            return nomComplet || '—';
         case 'codeproduit':
             return `<span style="font-size:.78rem;background:#f3f4f6;padding:.2rem .5rem;border-radius:5px;font-weight:600">${c.codeproduit||'—'}</span>${c.libelleproduit?`<br><span style="color:var(--text-muted);font-size:.78rem">${c.libelleproduit}</span>`:''}`;
         case 'saisiepar':

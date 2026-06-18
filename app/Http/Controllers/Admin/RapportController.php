@@ -440,7 +440,7 @@ class RapportController extends Controller
     public function production(Request $request)
     {
 
-        $contrats = Contrat::where('partenaire', "AFC")->where('branche', '!=', 'COM')->get();
+        $contrats = Contrat::where('partenaire', "AFC")->with('adherent')->where('branche', '!=', 'COM')->get();
         $allCodeproduit = Contrat::where('partenaire', "AFC")->where('branche', '!=', 'COM')->where('codeproduit', '!=', 'loyemp_test')->pluck('codeproduit')->unique();
 
         $allUserIdMembre = User::where('codepartenaire', 'AFC')->pluck('idmembre')->toArray();
