@@ -102,7 +102,6 @@
 
                                 </div>
                             </div><!---end row-->
-
                             <div class="row g-3 mb-3">
                                 <div class="col-12 col-lg-6">
                                     <label for="lieuresidenceAssur" class="form-label">Lieu de residence</label>
@@ -110,7 +109,7 @@
                                         <option selected value="">Sélectionner le lieu</option> <!-- Option vide pour le placeholder -->
 
                                         @foreach($villes as $ville)
-                                            <option value="{{ $ville['MonLibelle']}}">{{ $ville['MonLibelle'] ?? ''}}</option>
+                                            <option value="{{ $ville['MonLibelle'] }}">{{ $ville['MonLibelle'] ?? ''}}</option>
                                         @endforeach
                                     </select>
                                 </div>
