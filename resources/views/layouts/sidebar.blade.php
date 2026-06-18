@@ -120,7 +120,7 @@
 
                 @can('Voir le rapport de souscription')
                     <li>
-                        <a href="{{ route('report.eSouscription')}}">
+                        <a href="{{ route('report.production') }}">
                             <div class="parent-icon"><i class="lni lni-stackoverflow"></i>
                             </div>
                             <div class="menu-title">Productions</div>
