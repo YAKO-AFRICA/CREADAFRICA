@@ -225,6 +225,7 @@ Route::prefix('report')->name('report.')->group(function(){
     });
     Route::middleware(['auth','PreventBackHistory'])->group(function () {
         Route::get('eSouscription',[RapportController::class, 'eSouscription'])->name('eSouscription');
+        Route::get('production',[RapportController::class, 'production'])->name('production');
         Route::get('ePrestation',[RapportController::class, 'ePrestation'])->name('ePrestation');
         Route::get('ePret',[RapportController::class, 'ePret'])->name('ePret');
         Route::get('eValidation',[RapportController::class, 'eValidation'])->name('eValidation');

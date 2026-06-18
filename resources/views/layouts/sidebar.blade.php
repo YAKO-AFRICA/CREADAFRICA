@@ -123,10 +123,19 @@
                         <a href="{{ route('report.eSouscription')}}">
                             <div class="parent-icon"><i class="lni lni-stackoverflow"></i>
                             </div>
-                            <div class="menu-title">Souscription</div>
+                            <div class="menu-title">Productions</div>
                         </a>
                     </li>
                 @endcan
+                {{-- @can('Voir le rapport de souscription')
+                    <li>
+                        <a href="{{ route('report.eSouscription')}}">
+                            <div class="parent-icon"><i class="lni lni-stackoverflow"></i>
+                            </div>
+                            <div class="menu-title">Souscription</div>
+                        </a>
+                    </li>
+                @endcan --}}
                 {{-- @can('Voir le rapport de prestation')
                     <li>
                         <a href="{{ route('report.ePrestation')}}">
