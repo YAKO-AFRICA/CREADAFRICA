@@ -1883,6 +1883,7 @@ class ProductionController extends Controller
     {
         $contrat = Contrat::where('id', $id)->first();
         $villes = $api->get('villes');
+        // dd($villes);
 
         $agences = Cache::remember('banque_agences_all', 3600, function() {
             return TblBanqueAgence::orderBy('sigle', 'ASC')->get();

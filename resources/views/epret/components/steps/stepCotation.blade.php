@@ -189,9 +189,9 @@
                
                 <div class="col-sm-12">
                     <label for="numClient">N° Client <span class="text-danger">*</span></label>
-                    <input id="numClient" type="text" class="form-control" name="numeroclient" required >
+                    <input id="numClient" type="text" class="form-control" name="numerocompte" required >
                 </div>
-                <div class="col-sm-6 mt-3">
+                {{-- <div class="col-sm-6 mt-3">
                     <label for="numerocompte">N° Compte <span class="text-danger">*</span></label>
                     <input id="numerocompte" type="text" class="form-control" name="numerocompte" required>
                 </div>
@@ -199,7 +199,7 @@
                     <label for="cNumCompte">Confirmation du N° Compte <span class="text-danger">*</span></label>
                     <input id="cNumCompte" type="text" class="form-control" name="cNumerocompte" required>
                     <span id="error-message" class="text-danger" style="display: none;">Les numéros de compte ne correspondent pas.</span>
-                </div>                
+                </div>                 --}}
 
             </div>
 

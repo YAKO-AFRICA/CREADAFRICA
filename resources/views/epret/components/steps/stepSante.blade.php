@@ -231,6 +231,17 @@
         </div>
     </div>
 
+    <div class="my-3">
+        <div class="form-group">
+            <label for="autresAntecedents">Autres antécédents médicaux</label>
+            <textarea 
+            name="autresAntecedents" 
+            id="autresAntecedents" 
+            class="form-control 
+            input-modern" rows="3"></textarea>
+        </div>
+    </div>
+
     {{-- Hidden --}}
     <input type="hidden" name="codePret" value="{{ $codePret ?? '' }}">
     <input type="hidden" name="codeContrat" value="{{ $codeContrat ?? '' }}">
