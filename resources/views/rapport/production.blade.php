@@ -571,7 +571,7 @@ function renderCell(c, key) {
         case 'fraisadhesion':  return fmt(c.fraisadhesion);
         case 'montantrente':   return fmt(c.montantrente);
         // --- Durées ---
-        case 'duree':          return c.duree ? c.duree + ' mois' : '—';
+        case 'duree':          return c.duree ? c.duree + ' ans' : '—';
         case 'dureerente':     return c.dureerente ? c.dureerente + ' mois' : '—';
         // --- Textes simples ---
         case 'periodicite':    return c.periodicite || '—';
