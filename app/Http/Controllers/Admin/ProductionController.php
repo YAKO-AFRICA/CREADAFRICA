@@ -942,7 +942,7 @@ class ProductionController extends Controller
 
                 'branche' => $reseauId->codebranche,
 
-                'partenaire' => $reseauId->codereseau,
+                'partenaire' => "AFC",
                 // 'nomaccepterpar' => now(),
                 // 'refcontratsource' => now(),
                 'cleintegration' => $keyUniq,
