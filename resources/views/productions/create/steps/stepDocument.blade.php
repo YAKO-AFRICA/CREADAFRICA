@@ -61,6 +61,35 @@
         
                             <div class="mb-3">
         
+                                <label class="form-label">Tableau de mortalité</label>
+        
+                                <div class="input-group">
+        
+                                    <input type="file" name="files[]" class="form-control" accept=".xlsx,.xls,image/*,.doc,audio/*,.docx,video/*,.ppt,.pptx,.txt,.pdf" multiple onchange="previewFiles(event, 'previewTableauMortalite')">
+        
+                                    <input type="hidden" name="libelles[]" value="Tableau de mortalité">
+        
+                                    
+        
+                                </div>
+        
+                                <div id="previewTableauMortalite" class="mt-3 preview-area"></div>
+        
+                            </div>
+        
+                        </div>
+        
+                    </div>
+        
+                </div>
+                <div class="col-xl-9 mx-auto">
+        
+                    <div class="card">
+        
+                        <div class="card-body">
+        
+                            <div class="mb-3">
+        
                                 <label class="form-label">RIB</label>
         
                                 <div class="input-group">
