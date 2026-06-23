@@ -391,3 +391,4 @@
         document.getElementById("displayPeriodiciterPrime").textContent = periodicitePrime ? periodicitePrime.value : '';
     }
 </script>
+

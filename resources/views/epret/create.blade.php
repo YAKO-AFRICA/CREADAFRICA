@@ -53,6 +53,19 @@
 
     </style>
 
+    @php
+        $tok = Str::random(80);
+        $token = [
+            'token' => $tok,
+            'operation_type' => "E-SOUSCRIPTION",
+            'key_uuid' => $tok
+        ];
+        $keyUuid = $token['key_uuid'];
+        $operationType = $token['operation_type'];
+
+
+    @endphp
+
 
     <div class="container-fluid">
         <div class="card p-3">
@@ -81,6 +94,9 @@
                         @include('epret.components.steps.stepSante')
                     </div>
 
+                    <input type="hidden" id="tokGenerate" name="tokGenerate" value="{{ $tok }}">
+                    @include('productions.create.steps.signModal')
+
                     {{-- <div class="form-stepP">
                         <h3>Bénéficiaires</h3>
 
@@ -98,16 +114,21 @@
                         <div class="d-flex justify-content-between mt-3 w-100">
                             <button type="button" id="prevBtn" class="btn btn-secondary">Précédent</button>
                             <button type="button" id="nextBtn" class="btn btn-primary float-right">Suivant</button>
+
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#qrCodeModal" id="signBtnPret" 
+                            class="btn btn-two d-non">Signature<i class='bx bx-right-arrow-alt'></i>
+                            </button>
+
                             <button type="submit" id="submit" class="btn btn-primary float-end">Soumettre </button>
                         </div>
                     </div>
                 </form>
 
-                <div class="form-step">
+                {{-- <div class="form-step">
                     <h3>Document</h3>
 
                     @include('epret.components.steps.stepDocument')
-                </div>
+                </div> --}}
 
             </div>
             <div class="col-4">
@@ -195,10 +216,10 @@
                                 <div class="circle">4</div>
                                 <div>Résumé/Choix d'un médecin</div>
                             </div>
-                            <div class="step" data-step="5">
+                            {{-- <div class="step" data-step="5">
                                 <div class="circle">5</div>
                                 <div>Documents</div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -206,10 +227,9 @@
            </div>
         </div>
     </div>
-
-
-
-
+     <script>
+        const SIGN_API = "{{ config('services.sign_api') }}";
+    </script>
 
     <script>
         function updateFullName() {
@@ -229,25 +249,67 @@
             let date = new Date(birthday);
             let formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 
-
             document.getElementById('bithdayEmprunteur').textContent = formattedDate;
 
         });
     </script>
 
 
+    <script>
+        let pollingInterval;
 
+        document.addEventListener("DOMContentLoaded", function () {
+            const qrCodeModal = document.getElementById('qrCodeModal');
+
+            if (!qrCodeModal) {
+                console.error("Modal #qrCodeModal non trouvé !");
+                return;
+            }
+
+            qrCodeModal.addEventListener('shown.bs.modal', function () {
+                const keyUuid = "{{ $keyUuid }}";
+                const operationType = "{{ $operationType }}";
+
+                pollingInterval = setInterval(() => {
+                    fetch(`${SIGN_API}api/check-signature-status/${keyUuid}/${operationType}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("Statut de la signature :", data);
+
+                            if (data.status === 'completed') {
+                                clearInterval(pollingInterval);
+
+                                const modalInstance = bootstrap.Modal.getInstance(qrCodeModal);
+                                if (modalInstance) {
+                                    modalInstance.hide();
+                                }
+
+                                swal.fire({
+                                    icon: 'success',
+                                    title: 'Signature terminée avec succès !',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Erreur de polling :", error);
+                        });
+                }, 3000); // toutes les 3 secondes
+            });
+
+            qrCodeModal.addEventListener('hidden.bs.modal', function () {
+                console.log("Modal fermé : arrêt du polling.");
+                if (pollingInterval) {
+                    clearInterval(pollingInterval);
+                }
+            });
+        });
+    </script>
 
 </div>
 
-
-
-
-    {{-- <multi-step-form></multi-step-form> --}}
-
-    {{-- <script>
-        window.villes = @json($villes); // Encode les données en JSON
-    </script> --}}
 
 @endsection
 

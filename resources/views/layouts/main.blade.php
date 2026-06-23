@@ -258,6 +258,7 @@
             const prevBtn = document.getElementById("prevBtn");
             const nextBtn = document.getElementById("nextBtn");
             const submitBtn = document.getElementById("submit");
+            const signBtnPretBtn = document.getElementById("signBtnPret");
             let currentStep = 0;
 
             // Met à jour l'affichage des étapes du formulaire et du stepper
@@ -277,6 +278,7 @@
                 // prevBtn.style.display = currentStep < formSteps.length - 2 ? "inline-block" : "none";
                 nextBtn.style.display = currentStep < formSteps.length - 2 ? "inline-block" : "none";
                 submitBtn.style.display = currentStep === formSteps.length - 2 ? "inline-block" : "none";
+                signBtnPretBtn.style.display = currentStep === formSteps.length - 2 ? "inline-block" : "none";
             }
 
             // Valide les champs de l'étape actuelle
@@ -324,6 +326,43 @@
             });
 
              // Gestion du bouton "Submit" pour envoyer le formulaire
+            // submitBtn.addEventListener("click", function (e) {
+            //     e.preventDefault();
+            //     currentStep++;
+            //     updateFormAndStepper();
+
+            //     console.log("Formulaire soumis");
+
+            //     // if (validateCurrentStep()) {
+            //         const formData = new FormData(form);
+
+            //         // Envoi des données via Axios
+            //         axios.post('/epret/store', formData, {
+            //             headers: {
+            //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            //             },
+            //         })
+            //         .then((response) => {
+            //             if (response.data.type === 'success') {
+            //                 // alert('Formulaire enregistré avec succès !');
+            //                 swal.fire({
+            //                     icon: 'success',
+            //                     title: 'Formulaire enregistré avec succès !',
+            //                     showConfirmButton: false,
+            //                     timer: 1500
+            //                 })
+            //                 window.open(response.data.url, '_blank');
+            //                 window.open(response.data.urlback);
+            //             } else {
+            //                 alert('Erreur : ' + (response.data.message || 'Une erreur s\'est produite.'));
+            //             }
+            //         })
+            //         .catch((error) => {
+            //             console.error('Erreur :', error);
+            //             alert('Une erreur est survenue. Veuillez réessayer.');
+            //         });
+            //     // }
+            // });
             submitBtn.addEventListener("click", function (e) {
                 e.preventDefault();
                 currentStep++;
@@ -334,6 +373,18 @@
                 // if (validateCurrentStep()) {
                     const formData = new FormData(form);
 
+                    // Afficher le message de chargement
+                    let loadingAlert = Swal.fire({
+                        title: 'Enregistrement en cours...',
+                        text: 'Veuillez patienter pendant l\'enregistrement de vos données.',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
                     // Envoi des données via Axios
                     axios.post('/epret/store', formData, {
                         headers: {
@@ -341,28 +392,59 @@
                         },
                     })
                     .then((response) => {
+                        // Fermer l'alerte de chargement
+                        loadingAlert.close();
+
                         if (response.data.type === 'success') {
-                            // alert('Formulaire enregistré avec succès !');
-                            swal.fire({
+                            // Afficher le message de succès
+                            Swal.fire({
                                 icon: 'success',
                                 title: 'Formulaire enregistré avec succès !',
                                 showConfirmButton: false,
                                 timer: 1500
-                            })
+                            });
+
+                            console.log(response.data);
+                            
                             window.open(response.data.url, '_blank');
+                            window.location.href = response.data.urlback;
                         } else {
-                            alert('Erreur : ' + (response.data.message || 'Une erreur s\'est produite.'));
+                            // Afficher le message d'erreur
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erreur',
+                                text: response.data.message || 'Une erreur s\'est produite.',
+                                confirmButtonText: 'OK'
+                            });
                         }
                     })
                     .catch((error) => {
+                        // Fermer l'alerte de chargement en cas d'erreur
+                        loadingAlert.close();
+                        
                         console.error('Erreur :', error);
-                        alert('Une erreur est survenue. Veuillez réessayer.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erreur',
+                            text: 'Une erreur est survenue. Veuillez réessayer.',
+                            confirmButtonText: 'OK'
+                        });
                     });
                 // }
             });
 
             // Initialiser l'affichage des étapes
             updateFormAndStepper();
+        });
+    </script>
+
+    <script>
+        const signBtn = document.getElementById("signBtnPret");
+
+        signBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            this.disabled = true;
+            
         });
     </script>
 

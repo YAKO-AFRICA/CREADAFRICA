@@ -156,6 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(response => response.json())
             .then(data => {
+                console.log("Réponse API pour", garantie.codeproduitgarantie, ":", data);
                 processedCount++;
 
                 if (!data || data.error) {
@@ -164,7 +165,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 if (Array.isArray(data) && data.length > 0) {
-                    let firstRecord = data[0];
+                    const filteredData = data.filter(item => item.PrimeTheo && item.PrimeTheo !== "0.0");
+                    let firstRecord = filteredData[0];
                     let prime = firstRecord.Prime || 0;
                     let capital = firstRecord.Capital || 0;
 

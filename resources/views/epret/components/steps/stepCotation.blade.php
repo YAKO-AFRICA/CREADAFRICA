@@ -146,32 +146,32 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-check">
-                                <input type="radio" name="periodiciterPrime" class="form-check-input" id="Mensuelle" value="M" required onclick="updateDisplay()">
+                                <input type="radio" name="periodiciterPrime" class="form-check-input" id="Mensuelle" value="M" required onclick="updateDisplay()" disabled>
                                 <label class="form-check-label" for="Mensuelle">Mensuelle</label>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-check">
-                                <input type="radio" name="periodiciterPrime" id="Trimestrielle" class="form-check-input" value="T" required onclick="updateDisplay()">
+                                <input type="radio" name="periodiciterPrime" id="Trimestrielle" class="form-check-input" value="T" required onclick="updateDisplay()" disabled>
                                 <label class="form-check-label" for="Trimestrielle">Trimestrielle</label>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-check">
-                                <input type="radio" name="periodiciterPrime" id="Semestrielle" class="form-check-input" value="S" required onclick="updateDisplay()">
+                                <input type="radio" name="periodiciterPrime" id="Semestrielle" class="form-check-input" value="S" required onclick="updateDisplay()" disabled>
                                 <label class="form-check-label" for="Semestrielle">Semestrielle</label>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-check">
-                                <input type="radio" name="periodiciterPrime" id="Annuelle" class="form-check-input" value="A" required onclick="updateDisplay()">
+                                <input type="radio" name="periodiciterPrime" id="Annuelle" class="form-check-input" value="A" required onclick="updateDisplay()" disabled>
                                 <label class="form-check-label" for="Annuelle">Annuelle</label>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-check">
-                                <input type="radio" name="periodiciterPrime" id="Unique" class="form-check-input" value="U" checked required onclick="updateDisplay()">
-                                <label class="form-check-label" for="Unique">Versement Unique</label>
+                                <input type="radio" name="periodiciterPrime" id="Unique" class="form-check-input" value="U" checked required readonly onclick="updateDisplay()">
+                                <label class="form-check-label" for="Unique">Unique </label>
                             </div>
                         </div>
                     </div>

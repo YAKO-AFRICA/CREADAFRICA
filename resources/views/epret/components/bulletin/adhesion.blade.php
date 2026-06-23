@@ -66,7 +66,7 @@
                         </div>
                     </center>
                 </div>
-                <div style="width: 25%; float: right; margin-right: -60px">
+                <div style="width: 25%; float: right; margin-right: -80px">
                     <img src="data:image/jpg;base64,{{ base64_encode(file_get_contents(public_path('logos/CREADAFRICA.png'))) }}" alt="Logo" style="width: 100px">
                 </div>
             </div>
@@ -74,9 +74,9 @@
 
 
 
-        <section style="margin-top: 70px ">
-            <div>
-                Je soussigné {{ $pret->adherent->nom }} {{ $pret->adherent->prenom }} demande mon affiliation à l'assurance en référence et désigne comme bénéficiaire de ladite Assurance la CONTRACTANTE ci-après désigné 
+        <section style="margin-top: 100px ">
+            <div style="margin-bottom: 15px">
+                Je soussigné {{ $pret->adherent->nom }} {{ $pret->adherent->prenom }} demande mon affiliation à l'assurance en référence et désigne comme bénéficiaire de ladite Assurance la CONTRACTANTE ci-après désigné :
             </div>
              <div style="float: right; margin-top: -5px ">
                 <strong>Conseiller :</strong> <span>{{ Auth::user()->membre->nom }} {{ Auth::user()->membre->prenom}}</span>
@@ -85,14 +85,11 @@
 
         <section>
             <div class="container">
-
-                <div class="aderent" style="margin-top: 18px; border: 1px solid #ccc; background-color: #7471716e; height: 18px">
-
-                    <h4 style="color: #000000; font-size: 13px; margin-left: 5px">1. ADHERENT / ASSURE(E) :</h4>
-
+                <div class="aderent" style="margin-top: 20px; border: 1px solid #ccc; background-color: #7471716e; height: 18px">
+                    <h4 style="color: #000000; font-size: 12px; margin-left: 5px; margin-top: 2px">1. ADHERENT / ASSURE(E) :</h4>
                 </div>
 
-                <div class="adherent" style="margin-top: 5px; width: 100%">
+                <div class="adherent" style="margin-top: 15px; width: 100%;">
 
                     <div style="width: 50%; float: left;">
                         <div class="civilite" style="position: relative; font-size: 12px; margin-bottom: 10px; height: 12px;">
@@ -110,10 +107,7 @@
                             <span style="position: absolute; right: 60;">{{ $pret->adherent->datenaissance }}</span>
                         </div>
 
-                        <div class="lieu" style="position: relative; font-size: 12px; margin-bottom: 10px; height: 12px;">
-                            <label for="" style="position: absolute; left: 0;"><strong>A :</strong></label>
-                            <span style="position: absolute; right: 60;">{{ $pret->adherent->lieunaissance }}</span>
-                        </div>
+                        
                         <div class="cni" style="position: relative; font-size: 12px; margin-bottom: 10px; height: 12px;">
                             <label for="" style="position: absolute; left: 0;"><strong>N° CNI :</strong></label>
                             <span style="position: absolute; right: 60;">{{ $pret->adherent->numeropiece }}</span>
@@ -131,18 +125,13 @@
                             <span style="position: absolute; right: 60;">{{ $pret->adherent->mobile }}</span>
                         </div>
 
-                        <div class="telephone" style="position: relative; font-size: 12px; margin-bottom: 10px; height: 12px;">
-                            <label for="" style="position: absolute; left: 0;"><strong>Téléphone :</strong></label>
-                            <span style="position: absolute; right: 60;">{{ $pret->adherent->telephone }}</span>
-                        </div>
-
-                        <div class="email" style="position: relative; font-size: 12px; margin-bottom: 10px; height: 12px;">
-                            <label for="" style="position: absolute; left: 0;"><strong>Email :</strong></label>
-                            <span style="position: absolute; right: 60;">{{ $pret->adherent->email }}</span>
+                        <div class="lieu" style="position: relative; font-size: 12px; margin-bottom: 10px; height: 12px;">
+                            <label for="" style="position: absolute; left: 0;"><strong>A :</strong></label>
+                            <span style="position: absolute; right: 60;">{{ $pret->adherent->lieunaissance }}</span>
                         </div>
 
                         <div class="adresse" style="position: relative; font-size: 12px; margin-bottom: 10px; height: 12px;">
-                            <label for="" style="position: absolute; left: 0;"><strong>Adresse :</strong></label>
+                            <label for="" style="position: absolute; left: 0;"><strong>Lieu de résidence :</strong></label>
                             <span style="position: absolute; right: 60;">{{ $pret->adherent->lieuresidence }}</span>
                         </div>
 
@@ -165,19 +154,19 @@
                 </div>
                 <div style="width: 30%; float: left;">
                     <div class="civilite" style="position: relative; font-size: 12px; margin-bottom: 10px; height: 12px;">
-                        <label for="" style="position: absolute; left: 0;"><strong>Durée du pret (mois) :</strong></label>
-                        <span style="position: absolute; right: 60;">{{ $pret->duree }}</span>
+                        <label for="" style="position: absolute; left: 0;"><strong>Durée du pret  :</strong></label>
+                        <span style="position: absolute; right: 60;">{{ $pret->duree }} mois</span>
                     </div>
                 </div>
                 <div style="width: 30%; float: right;">
                     <div class="civilite" style="position: reltive; font-size: 12px; margin-bottom: 10px; height: 12px;">
-                        <label for="" style="position: absoute; left: 0;"><strong>Montant du pret (Fcfa) :</strong></label>
-                        <span style="position: absolute;">{{ $pret->montantpret }}</span>
+                        <label for="" style="position: absoute; left: 0;"><strong>Montant du pret  :</strong></label>
+                        <span style="position: absolute;">{{ number_format($pret->montantpret, 0, ',', ' ') }} Fcfa</span>
                     </div>
                 </div>
 
             </div>
-            <div style="width: 100%; margin-top: 25px;">
+            {{-- <div style="width: 100%; margin-top: 25px;">
                 <div style="width: 40%; float: left;">
                     <div class="civilite" style="position: relatie; font-size: 12px; margin-bottom: 10px; height: 12px;">
                         <label for="" style="position: absolte; left: 0;"><strong>Mise en place prévue le :</strong></label>
@@ -197,61 +186,59 @@
                     </div>
                 </div>
 
-            </div>
+            </div> --}}
         </section>
 
-        <div class="prime" style="margin-top: 35px; border: 1px solid #ccc; background-color: #7471716e; height: 12px">
+        <div class="prime" style="margin-top: 35px; border: 1px solid #ccc; background-color: #7471716e; height: 18px">
 
-            <h4 style="color: #000000; font-size: 10px; margin-left: 5px">2. PRIMES :</h4>
+            <h4 style="color: #000000; font-size: 12px; margin-left: 5px; margin-top: 2px">2. PRIMES :</h4>
 
         </div>
-        <table border="1" class="table" style="width: 100%; font-size: 8px; text-align: left;">
+        <table border="1" class="table" style="width: 100%; font-size: 8px; text-align: left; margin-top: 10px;">
             <thead>
                 <tr style="background-color: #f2f2f2;">
-                    <th>Prime principale</th>
-                    <th>Prime YAKO</th>
-                    {{-- <th>Fraie Adhésion</th> --}}
-                    <th>PRIME TOTAL</th>
+                    <th style="padding: 5px">Prime principale</th>
+                    <th style="padding: 5px">Prime YAKO</th>
+                    <th style="padding: 5px">Surprime </th>
+                    <th style="padding: 5px">PRIME TOTAL</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ number_format($pret->prime, 2, ',', '.') }}</td>
-                    <td>
+                    <td style="padding: 5px; text-align: right">{{ number_format($pret->prime, 0, ',', '.') }} Fcfa</td>
+                    <td style="padding: 5px; text-align: right">
                         @if ($pret->primeobseque != null)
-                            {{ number_format($pret->primeobseque, 2, ',', '.') }}
+                            {{ number_format($pret->primeobseque, 0, ',', '.') }} Fcfa
                         @else
-                            {{ number_format(0, 2, ',', '.') }}
+                            {{ number_format(0, 0, ',', '.') }} Fcfa
                         @endif
                     </td>
-                    {{-- <td>{{ number_format(2500, 2, ',', '.') }}</td> --}}
-                    <td>{{ number_format($primeTotal, 2, ',', '.') }}</td>
+                    <td style="padding: 5px; text-align: right">{{ number_format(0, 0, ',', '.') }} Fcfa</td>
+                    <td style="padding: 5px; text-align: right">{{ number_format($primeTotal, 0, ',', '.') }} Fcfa</td>
                 </tr>
             </tbody>
         </table>
 
 
         <div class="benificiaire" style="margin-top: 22px; border: 1px solid #ccc; background-color: #7471716e; height: 18px">
-
-            <h4 style="color: #000000; font-size: 13px; margin-left: 5px">3. BENEFICIAIRE :</h4>
-
+            <h4 style="color: #000000; font-size: 12px; margin-left: 5px ; margin-top: 2px">3. BENEFICIAIRE :</h4>
         </div>
-        <table border="1" class="table" style="width: 100%; font-size: 12px; text-align: left;">
+        <table border="1" class="table" style="width: 100%; font-size: 12px; text-align: left; margin-top: 10px;">
             <thead>
                 <tr style="background-color: #f2f2f2;">
-                    <th>Nom & Prénoms</th>
-                    <th>Né(e) le</th>
-                    <th>Lieu de naissance</th>
-                    <th>Lieu de résidence</th>
-                    <th>Téléphone</th>
-                    <th>Email</th>
+                    <th style="padding: 5px">Nom & Prénoms</th>
+                    {{-- <th style="padding: 5px">Né(e) le</th> --}}
+                    <th style="padding: 5px">Lieu de naissance</th>
+                    <th style="padding: 5px">Lieu de résidence</th>
+                    <th style="padding: 5px">Téléphone</th>
+                    <th style="padding: 5px">Email</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($pret->beneficiaires->where('nom' , '!=', "COFINA") as $benef)
                     <tr>
                         <td>{{ $benef->nom }} {{ $benef->prenom }}</td>
-                        <td>{{ $benef->datenaissance ?? 'Non précisé' }}</td>
+                        {{-- <td>{{ $benef->datenaissance ?? 'Non précisé' }}</td> --}}
                         <td>{{ $benef->lieunaissance ?? 'Non précisé' }}</td>
                         <td>{{ $benef->lieuresidence ?? 'Non précisé' }}</td>
                         <td>{{ $benef->telephone ?? 'Non précisé' }}</td>
@@ -260,31 +247,32 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="prime" style="margin-top: 22px; border: 1px solid #ccc; background-color: #7471716e; height: 12px">
-
-            <h4 style="color: #000000; font-size: 10px; margin-left: 5px">4. GARANTIES & PRIMES :</h4>
+        <div class="prime" style="margin-top: 22px; border: 1px solid #ccc; background-color: #7471716e; height: 18px">
+            <h4 style="color: #000000; font-size: 12px; margin-left: 5px; margin-top: 2px">4. GARANTIES & PRIMES :</h4>
         </div>
-        <table border="1" class="table" style="width: 100%; font-size: 8px; text-align: left;">
+        <table border="1" class="table" style="width: 100%; font-size: 8px; text-align: left; margin-top: 10px;">
             <thead>
                 <tr style="background-color: #f2f2f2;">
-                    <th>Nom Complet</th>
-                    <th>Garantie</th>
-                    <th>Capital (F CFA)</th>
-                    <th>Prime (F CFA)</th>
+                    <th style="padding: 5px">Nom Complet</th>
+                    <th style="padding: 5px">Garantie</th>
+                    <th style="padding: 5px">Capital (F CFA)</th>
+                    <th style="padding: 5px">Prime (F CFA)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>
-                        @foreach ($pret->beneficiaires->where('nom', "Cofina") as $benef)
+                    <td style="padding: 5px; text-align: center">
+                        @foreach ($pret->beneficiaires->where('nom', "AFC") as $benef)
                             <span>{{ $benef->nom ?? ''}} {{ $benef->prenom ?? ''}}</span>
                         @endforeach
                     </td>
-                    <td>
-                        <span>-----</span>
+                    <td style="padding: 5px; text-align: center">
+                        <span>
+                            Décès & Invalidité Totale et Définitive (ITD)
+                        </span>
                     </td>
-                    <td>{{ number_format($pret->montantpret, 2, ',', '.') }}</td>
-                    <td>{{ number_format($primeTotal, 2, ',', '.') }}</td>
+                    <td style="padding: 5px; text-align: right">{{ number_format($pret->montantpret, 0, ',', '.') }}</td>
+                    <td style="padding: 5px; text-align: right">{{ number_format($primeTotal, 0, ',', '.') }}</td>
                 </tr>
             </tbody>
         </table>
@@ -314,6 +302,11 @@
                     <div class="nom">
 
                         <label for="nom">BON POUR AUTORISATION A L'ASSURANCE ADHERENT (signature précédée de la mention LU et APPROUVE)</label>
+                        <div style="width: 100%; text-align: center; vertical-align: middle;">
+                            @if ($imageSrc != null)
+                                <img src="{{ $imageSrc }}" alt="Signature" style="width: 70px; height: 70px;">
+                            @endif
+                        </div>
 
                     </div>
 

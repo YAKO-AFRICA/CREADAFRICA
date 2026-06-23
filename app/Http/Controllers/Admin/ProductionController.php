@@ -1717,8 +1717,6 @@ class ProductionController extends Controller
                 Log::warning("Recto/Verso manquants pour le contrat {$contrat->id}");
             }
 
-
-
             // enregistrer le bulletin dans la base de données
             foreach ($allFiles as $file) {
                 TblDocument::create($file);

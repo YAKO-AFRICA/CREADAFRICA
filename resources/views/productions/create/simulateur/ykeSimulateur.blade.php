@@ -42,7 +42,7 @@
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label class="form-label">Code Produit</label>
-                                        <input type="text" class="form-control" id="CodeProduit" name="CodeProduit" value="{{ $product->CodeProduit}}" readonly>
+                                        <input type="text" class="form-control" id="CodeProduit" name="CodeProduit" value="YKE_2018" readonly>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Périodicité</label>
@@ -220,10 +220,10 @@
         if (m < 0 || (m === 0 && today.getDate() < dateNaissanceSaisie.getDate())) {
             age--;
         }
-        if (age > 75) {
+        if (age < 12 || age > 74) {
             swal.fire({
                 title: "Âge non éligible",
-                text: "L'âge maximum pour souscrire à ce produit est de 75 ans.",
+                text: "L'âge doit se situer entre 12 et 74 ans. Veuillez saisir une date de naissance valide.",
                 icon: "warning",
                 showCancelButton: false,
                 confirmButtonText: "OK"

@@ -2,36 +2,36 @@
 
 namespace App\Http\Controllers\Admin;
 
-use PDF;
-
+use App\Http\Controllers\Controller;
+use App\Models\Adherent;
+use App\Models\AssureGarantie;
+use App\Models\Assurer;
+use App\Models\Beneficiaire;
+use App\Models\Contrat;
+use App\Models\DeclarationSante;
+use App\Models\Membre;
+use App\Models\Pret;
+use App\Models\Product;
+use App\Models\ProduitGarantie;
+use App\Models\Profession;
+use App\Models\Signature;
+use App\Models\TblAgence;
+use App\Models\TblDocument;
+use App\Models\TblProfession;
+use App\Models\TblSecteurActivite;
+use App\Models\TblSociete;
+use App\Models\TblVille;
 use Carbon\Carbon;
-
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use App\Models\Pret;
-use App\Models\Membre;
-use App\Models\Assurer;
-use App\Models\Contrat;
-use App\Models\Product;
-use setasign\Fpdi\Fpdi;
-use App\Models\Adherent;
-use App\Models\TblVille;
-use App\Models\TblAgence;
-use App\Models\Profession;
-use App\Models\TblSociete;
-use App\Models\TblDocument;
-use App\Models\Beneficiaire;
 use Illuminate\Http\Request;
-use App\Models\TblProfession;
-use App\Models\AssureGarantie;
-use App\Models\ProduitGarantie;
-use App\Models\DeclarationSante;
-use App\Models\TblSecteurActivite;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use PDF;
+use setasign\Fpdi\Fpdi;
 
 class EpretController extends Controller
 {
@@ -80,9 +80,30 @@ class EpretController extends Controller
 
         $simulationData = session('simulationData', []);
 
+        $detailCountries = [];
+        try {
+            $response = Http::withOptions(['timeout' => 60])->get(config('services.api_get_countries'));
+            if ($response->successful()) {
+                $data = $response->json();
+
+                Log::info('Réponse de l\'API des pays : ', $data);
+                // Vérifie si la clé "countries" existe
+                if (isset($data['countries'])) {
+                    $detailCountries = $data['countries'];
+                    Log::info('La clé "countries" est trouvée dans la réponse API.');
+                } else {
+                    Log::info('La clé "countries" est absente de la réponse API.');
+                }
+            } else {
+                Log::error('Échec de la récupération des pays depuis l\'API.');
+            }
+        } catch (\Exception $e) {
+            Log::error('Exception lors de l\'appel à l\'API des pays : ' . $e->getMessage());
+        }
 
 
-        return view('epret.create', compact('product', 'villes', 'secteurActivites', 'professions','productGarantie','societes','agences','simulationData'));
+
+        return view('epret.create', compact('product', 'villes', 'secteurActivites', 'professions','productGarantie','societes','agences','simulationData','detailCountries'));
     }
 
 
@@ -424,6 +445,12 @@ class EpretController extends Controller
 
                 // Log::info($newPret);
 
+                 $sign = Signature::where('key_uuid', $request->tokGenerate)->first();
+
+                if ($sign) {
+                    $sign->update(['reference_key' => $idContrat]);
+                }
+
                 DB::commit();
 
                 $dataParam=[
@@ -437,7 +464,7 @@ class EpretController extends Controller
                 return response()->json([
                     'type' => 'success',
                     'url' => $bulletinData['file_url'],
-                    'urlback' => '',
+                    'urlback' => route('prod.show', ['id' => $idContrat]),
                     // 'message' => "Enregistrer avec success !",
                     'code' => 200,
                 ]);
@@ -459,24 +486,28 @@ class EpretController extends Controller
         {
             try {
                 $pret = Pret::where('id', $dataParam['idPret'])->with('sante')->first();
+
                 Log::info("pret trouver " . $pret);
                 if (!$pret) {
                     return response()->json(['success' => false, 'message' => 'Prêt non trouvé.'], 404);
                 }
 
-                // $imageUrl = env('SIGN_API') . "api/get-signature/" . $dataParam['idContrat'] . "/E-SOUSCRIPTION";
-                // Log::info("sign url : " . $imageUrl );
+                $imageUrl = env('SIGN_API') . "api/get-signature/" . $dataParam['idContrat'] . "/E-SOUSCRIPTION";
+                Log::info("sign url : " . $imageUrl );
 
-                // $imageData = file_get_contents($imageUrl);
-                // $base64Image = base64_encode($imageData);
-                // $imageSrc = 'data:image/png;base64,'.$base64Image;
+                $imageData = file_get_contents($imageUrl);
+                $base64Image = base64_encode($imageData);
+                $imageSrc = 'data:image/png;base64,'.$base64Image;
 
                 // Options pour DomPDF
                 $options = new Options();
                 $options->set('isRemoteEnabled', true);
 
                 // Génération du bulletin PDF temporaire
-                $pdf = PDF::loadView('epret.components.bulletin.adhesion', ['pret' => $pret]);
+                $pdf = PDF::loadView('epret.components.bulletin.adhesion', [
+                    'pret' => $pret,
+                    'imageSrc' => $imageSrc
+                ]);
 
                 // Création du dossier si nécessaire
                 $bulletinDir = public_path('documents/bulletin/');
@@ -521,6 +552,83 @@ class EpretController extends Controller
                 $finalBulletinPath = $bulletinDir . 'adhesion_bulletin_' . $pret->id . '.pdf';
                 $finalPdf->Output($finalBulletinPath, 'F');
 
+                // new code
+            $destinationPath = base_path(env('UPLOADS_PATH'));
+            $fileName = $dataParam['idContrat'] . '-' . now()->timestamp.'-' .'Bulletin_de_souscription' . '.pdf';
+            $finalPdf->Output($destinationPath . $fileName, 'F');
+
+            $allFiles[] = [
+                'codecontrat' => $dataParam['idContrat'],
+                'filename' => $fileName,
+                'libelle' => "Bulletin de souscription",
+                'saisiele' => now(),
+                'saisiepar' => Auth::user()->membre->idmembre,
+                'source' => "ES",
+            ];
+
+            $imageSignUrl = env('SIGN_API') . "api/get-piece/" . $dataParam['idContrat'] . "/E-SOUSCRIPTION";
+            try {
+                $response = Http::timeout(5)->get($imageSignUrl);
+
+                if ($response->successful()) {
+                    $data = $response->json();
+
+                    if (!empty($data['error']) && $data['error'] === true) {
+                        Log::info('Pièce non trouvée pour le contrat N°: ' . $dataParam['idContrat']);
+                    } else {
+                        $piece_recto = $data['recto_path'] ?? '';
+                        $piece_verso = $data['verso_path'] ?? '';
+                    }
+                } else {
+                    Log::error('Erreur HTTP lors de l\'appel de l\'API signature. Réponse : ', $response->json());
+                }
+            } catch (\Exception $e) {
+                Log::error('Exception lors de la récupération de la signature : ' . $e->getMessage());
+            }
+
+            // Vérifier qu'on a bien les deux images
+            if ($piece_recto && $piece_verso) {
+
+                // Télécharger le contenu recto/verso
+                $rectoContent = Http::get($piece_recto)->body();
+                $versoContent = Http::get($piece_verso)->body();
+
+                // Encoder en base64 pour les afficher dans un PDF
+                $rectoBase64 = base64_encode($rectoContent);
+                $versoBase64 = base64_encode($versoContent);
+
+                // Créer la vue PDF avec les deux images
+                $html = view('productions.cni', [
+                    'rectoContent' => $rectoBase64,
+                    'versoContent' => $versoBase64
+                ])->render();
+
+                // Nom du fichier PDF
+                $newFileName = $dataParam['idContrat'] . '-' . now()->timestamp . '-piece_justificative.pdf';
+                // $mergedFilePath = base_path(env('UPLOADS_PATH'));
+
+                // Générer le PDF
+                $pdf = Pdf::loadHTML($html)->setPaper('a4', 'portrait');
+                $pdf->save($destinationPath . $newFileName);
+
+                // Sauvegarder les infos du fichier
+                $allFiles[] = [
+                    'codecontrat' => $dataParam['idContrat'],
+                    'filename' => $newFileName,
+                    'libelle' => "Pièce justificative d'identité",
+                    'saisiele' => now(),
+                    'saisiepar' => Auth::user()->membre->idmembre,
+                    'source' => "ES",
+                ];
+            } else {
+                Log::warning("Recto/Verso manquants pour le contrat {$dataParam['idContrat']}");
+            }
+
+            // enregistrer le bulletin dans la base de données
+            foreach ($allFiles as $file) {
+                TblDocument::create($file);
+            }
+
                 // Supprimer le fichier temporaire du bulletin après fusion
                 if (file_exists($tempBulletinPath)) {
                     unlink($tempBulletinPath);
@@ -550,7 +658,6 @@ class EpretController extends Controller
         }
 
         public function printBulletin(Request $request, $idPret)
-
         {
             try {
                 // Récupérer les données nécessaires au bulletin
@@ -656,85 +763,85 @@ class EpretController extends Controller
 
 
         public function addDocDefaud(Request $request)
-{
-    try {
-        DB::beginTransaction();
+        {
+            try {
+                DB::beginTransaction();
 
-        $pret = Pret::where('saisiepar', Auth::user()->idmembre)
-            ->latest('saisiele')
-            ->first();
+                $pret = Pret::where('saisiepar', Auth::user()->idmembre)
+                    ->latest('saisiele')
+                    ->first();
 
-        $contrat = Contrat::where('saisiepar', Auth::user()->idmembre)
-            ->latest('saisiele')
-            ->first();
+                $contrat = Contrat::where('saisiepar', Auth::user()->idmembre)
+                    ->latest('saisiele')
+                    ->first();
 
-        abort_if(!$pret || !$contrat, 404, 'Prêt ou contrat introuvable.');
+                abort_if(!$pret || !$contrat, 404, 'Prêt ou contrat introuvable.');
 
-        $idPret     = $pret->id;
-        $idContrat  = $contrat->id;
+                $idPret     = $pret->id;
+                $idContrat  = $contrat->id;
 
-        $labelMap = [
-            'bulletin'  => 'Bulletin de souscription',
-            'cni'       => 'Pièce justificatif d\'identité (CNI)',
-            'rib'       => 'RIB',
-            'signature' => 'Signature',
-            'photo'     => 'Photo',
-            'autres'    => 'Autres pièces',
-        ];
+                $labelMap = [
+                    'bulletin'  => 'Bulletin de souscription',
+                    'cni'       => 'Pièce justificatif d\'identité (CNI)',
+                    'rib'       => 'RIB',
+                    'signature' => 'Signature',
+                    'photo'     => 'Photo',
+                    'autres'    => 'Autres pièces',
+                ];
 
-        $destinationPath = base_path(env('UPLOADS_PATH'));
-        $uploadsPrefix   = config('filesystems.uploads_path');
+                $destinationPath = base_path(env('UPLOADS_PATH'));
+                $uploadsPrefix   = config('filesystems.uploads_path');
 
-        $allFiles = $request->file('files', []);  // ['bulletin' => [...], 'cni' => [...], ...]
+                $allFiles = $request->file('files', []);  // ['bulletin' => [...], 'cni' => [...], ...]
 
-        foreach ($allFiles as $groupKey => $groupFiles) {
-            // groupFiles peut être null si aucun fichier uploadé pour ce groupe
-            if (empty($groupFiles)) {
-                continue;
-            }
+                foreach ($allFiles as $groupKey => $groupFiles) {
+                    // groupFiles peut être null si aucun fichier uploadé pour ce groupe
+                    if (empty($groupFiles)) {
+                        continue;
+                    }
 
-            $libelle = $labelMap[$groupKey] ?? $groupKey;
+                    $libelle = $labelMap[$groupKey] ?? $groupKey;
 
-            foreach ($groupFiles as $file) {
-                if (!$file->isValid()) {
-                    continue;
+                    foreach ($groupFiles as $file) {
+                        if (!$file->isValid()) {
+                            continue;
+                        }
+
+                        $imageName = $idPret . '-' . now()->timestamp . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+                        $file->move($destinationPath, $imageName);
+
+                        TblDocument::create([
+                            'codecontrat' => $idContrat,
+                            'codePret'    => $idPret,
+                            'filename'    => $imageName,
+                            'libelle'     => $libelle,
+                            'saisiele'    => now(),
+                            'saisiepar'   => Auth::user()->membre->idmembre,
+                            'source'      => 'ES',
+                        ]);
+                    }
                 }
 
-                $imageName = $idPret . '-' . now()->timestamp . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+                DB::commit();
 
-                $file->move($destinationPath, $imageName);
+                return response()->json([
+                    'type'    => 'success',
+                    'urlback' => route('prod.show', $idContrat),
+                    'message' => 'Enregistré avec succès!',
+                    'code'    => 200,
+                ]);
 
-                TblDocument::create([
-                    'codecontrat' => $idContrat,
-                    'codePret'    => $idPret,
-                    'filename'    => $imageName,
-                    'libelle'     => $libelle,
-                    'saisiele'    => now(),
-                    'saisiepar'   => Auth::user()->membre->idmembre,
-                    'source'      => 'ES',
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                return response()->json([
+                    'type'    => 'error',
+                    'urlback' => 'back',
+                    'message' => 'Erreur système! ' . $th->getMessage(),
+                    'code'    => 500,
                 ]);
             }
         }
-
-        DB::commit();
-
-        return response()->json([
-            'type'    => 'success',
-            'urlback' => route('prod.show', $idContrat),
-            'message' => 'Enregistré avec succès!',
-            'code'    => 200,
-        ]);
-
-    } catch (\Throwable $th) {
-        DB::rollBack();
-        return response()->json([
-            'type'    => 'error',
-            'urlback' => 'back',
-            'message' => 'Erreur système! ' . $th->getMessage(),
-            'code'    => 500,
-        ]);
-    }
-}
 
 
     /**

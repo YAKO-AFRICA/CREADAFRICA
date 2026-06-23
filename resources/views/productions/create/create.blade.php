@@ -326,10 +326,4 @@
     });
 </script>
 
-
-
-
-
-
-
 @endsection
