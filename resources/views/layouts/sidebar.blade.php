@@ -175,14 +175,13 @@
                 </a>
             </li>
 
-
             @endcan
 
             @can('Voir le support')
             <li class="menu-label">Support</li>
 
             <li>
-                <a href="">
+                <a href="{{ route('support.index') }}">
                     <div class="parent-icon"><i class="bx bx-folder"></i>
                     </div>
                     <div class="menu-title">Documentation</div>

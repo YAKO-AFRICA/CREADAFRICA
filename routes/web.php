@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\RapportController;
 use App\Http\Controllers\Admin\RdvController;
 use App\Http\Controllers\Admin\SanteController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Admin\ValidationController;
 use App\Http\Controllers\AttachmentController;
@@ -131,6 +132,8 @@ Route::prefix('tickets')->name('ticket.')->group(function(){
     });
 
 });
+
+Route::get('/support/index', [SupportController::class, 'index'])->name('support.index');
 
 // routes/web.php
 Route::get('/api/membres/{partenaire}', [UserController::class, 'getMembresByPartenaire'])
