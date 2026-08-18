@@ -75,7 +75,7 @@ class UserController extends Controller
     {
 
         $membres = Membre::orderby('created_at', 'desc')
-        ->where('typ_membre', '!=', '3')->whereIn('codepartenaire',['ASSFIN', 'SAAF'])
+        ->where('typ_membre', '!=', '3')->whereIn('codepartenaire',['AFC'])
         ->get()
         ->groupBy('codepartenaire');
 
@@ -93,10 +93,10 @@ class UserController extends Controller
         ]);
         $agenceByReseeaus = $response['dataAgence'] ?? [];
 
-        $reseaux = Reseau::whereIn('codepartenaire',['ASSFIN', 'SAAF'])->get();
+        $reseaux = Reseau::whereIn('codepartenaire',['AFC'])->get();
         $reseauIdPluck = $reseaux->pluck('id');
         $zones = Zone::whereIn('codereseau', $reseauIdPluck)->get();
-        $partners = Partner::whereIn('code',['ASSFIN', 'SAAF'])->get();
+        $partners = Partner::whereIn('code',['AFC'])->get();
         $roles = Role::all();
         $profiles = Profile::where('codereseau', 4)->get();
         $codepartenaire = $id;
