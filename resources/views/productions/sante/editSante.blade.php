@@ -6,12 +6,12 @@
     <div style="padding: 20px; border-bottom: 2px solid #f1f5f9; background-color: #f8fafc; border-radius: 12px 12px 0 0;">
         <h2 style="margin: 0; font-size: 1.5rem; color: #0f172a;">Édition du Dossier Médical</h2>
         <p style="margin: 5px 0 0; color: #64748b; font-size: 0.9rem;">
-            Code Contrat : <strong>{{ $sante->codeContrat ?? '-' }}</strong>
+            Code Contrat : <strong>{{ $sante?->codeContrat ?? '-' }}</strong>
         </p>
     </div>
 
     <!-- FORM -->
-    <form action="{{ route('prod.sante.update', $sante->id) }}" method="POST" style="padding: 25px;" class="submitForm">
+    <form action="{{ route('prod.sante.update', $sante?->id) }}" method="POST" style="padding: 25px;" class="submitForm">
         @csrf
 
         <!-- CONSTANTES -->
@@ -27,7 +27,7 @@
                     <div class="input-group">
                         <input type="number" 
                             name="taille"
-                            value="{{ old('taille', $sante->taille) }}"
+                            value="{{ old('taille', $sante?->taille) }}"
                             class="form-control" 
                             min="10" 
                             max="250"
@@ -41,7 +41,7 @@
                     <div class="input-group">
                         <input type="number" 
                             name="poids"
-                            value="{{ old('poids', $sante->poids) }}"
+                            value="{{ old('poids', $sante?->poids) }}"
                             class="form-control"
                             min="1"
                             max="500"
@@ -54,11 +54,11 @@
                     <label>Tension (Min / Max)</label>
                     <div style="display:flex; gap:5px;">
                         <input type="text" name="tensionMin"
-                            value="{{ old('tensionMin', $sante->tensionMin) }}"
+                            value="{{ old('tensionMin', $sante?->tensionMin) }}"
                             placeholder="Min" class="form-control">
 
                         <input type="text" name="tensionMax"
-                            value="{{ old('tensionMax', $sante->tensionMax) }}"
+                            value="{{ old('tensionMax', $sante?->tensionMax) }}"
                             placeholder="Max" class="form-control">
                     </div>
                 </div>
@@ -71,8 +71,8 @@
                     <label>Tabac</label>
                     <select name="smoking" class="form-control">
                         <option value="">Sélectionner...</option>
-                        <option value="Oui" {{ old('smoking', $sante->smoking) == 'Oui' ? 'selected' : '' }}>Oui</option>
-                        <option value="Non" {{ old('smoking', $sante->smoking) == 'Non' ? 'selected' : '' }}>Non</option>
+                        <option value="Oui" {{ old('smoking', $sante?->smoking) == 'Oui' ? 'selected' : '' }}>Oui</option>
+                        <option value="Non" {{ old('smoking', $sante?->smoking) == 'Non' ? 'selected' : '' }}>Non</option>
                     </select>
                 </div>
 
@@ -80,15 +80,15 @@
                     <label>Alcool</label>
                     <select name="alcohol" class="form-control">
                         <option value="">Sélectionner...</option>
-                        <option value="Oui" {{ old('alcohol', $sante->alcohol) == 'Oui' ? 'selected' : '' }}>Oui</option>
-                        <option value="Non" {{ old('alcohol', $sante->alcohol) == 'Non' ? 'selected' : '' }}>Non</option>
+                        <option value="Oui" {{ old('alcohol', $sante?->alcohol) == 'Oui' ? 'selected' : '' }}>Oui</option>
+                        <option value="Non" {{ old('alcohol', $sante?->alcohol) == 'Non' ? 'selected' : '' }}>Non</option>
                     </select>
                 </div>
 
                 <div>
                     <label>Sport</label>
                     <input type="text" name="sport"
-                        value="{{ old('sport', $sante->sport) }}"
+                        value="{{ old('sport', $sante?->sport) }}"
                         placeholder="Fréquence / Type"
                         class="form-control">
                 </div>
@@ -120,8 +120,8 @@
                 <div>
                     <label>{{ $label }}</label>
                     <select name="{{ $name }}" class="form-control">
-                        <option value="Non" {{ old($name, $sante->$name) == 'Non' ? 'selected' : '' }}>Non</option>
-                        <option value="Oui" {{ old($name, $sante->$name) == 'Oui' ? 'selected' : '' }}>Oui</option>
+                        <option value="Non" {{ old($name, $sante?->$name) == 'Non' ? 'selected' : '' }}>Non</option>
+                        <option value="Oui" {{ old($name, $sante?->$name) == 'Oui' ? 'selected' : '' }}>Oui</option>
                     </select>
                 </div>
                 @endforeach
@@ -132,13 +132,13 @@
 
                 <div>
                     <label>Traitements actuels</label>
-                    <textarea name="treatment" class="form-control" rows="2">{{ old('treatment', $sante->treatment) }}</textarea>
+                    <textarea name="treatment" class="form-control" rows="2">{{ old('treatment', $sante?->treatment) }}</textarea>
                 </div>
 
                 <div>
                     <label>Dernière chirurgie</label>
                     <input type="text" name="interChirugiale"
-                        value="{{ old('interChirugiale', $sante->interChirugiale) }}"
+                        value="{{ old('interChirugiale', $sante?->interChirugiale) }}"
                         class="form-control">
                 </div>
 
