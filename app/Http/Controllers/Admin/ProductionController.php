@@ -1883,9 +1883,7 @@ class ProductionController extends Controller
         $villes = $api->get('villes');
         // dd($villes);
 
-        $agences = Cache::remember('banque_agences_all', 3600, function() {
-            return TblBanqueAgence::orderBy('sigle', 'ASC')->get();
-        });
+        $agences = [];
 
         $productGarantie = ProduitGarantie::where('CodeProduit', $contrat->codeproduit)->where('branche', 'IND')->get();
 
