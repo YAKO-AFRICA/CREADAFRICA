@@ -74,8 +74,8 @@
                 @foreach($fields as $name => $label)
                 <div style="padding:10px; border-radius:6px; background: #f8fafc;">
                     <strong>{{ $label ?? ' ' }}</strong><br>
-                    <span class="badge bg-{{ $sante->$name == 'Oui' ? 'danger' : 'success' }}">
-                        {{ $sante->$name ?? ' ' }}
+                    <span class="badge bg-{{ $sante?->$name == 'Oui' ? 'danger' : 'success' }}">
+                        {{ $sante?->$name ?? ' ' }}
                     </span>
                 </div>
                 @endforeach
