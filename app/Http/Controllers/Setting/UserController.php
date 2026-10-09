@@ -181,26 +181,26 @@ class UserController extends Controller
                 break;
         }
 
-        Log::info($request->codeequipe);
-        $response = $this->api->post('search-agence-web', [
-            'codeReseau' => 'ASSFIN'
-        ]);
-        $agenceByReseeaus = $response['dataAgence'] ?? [];
+        // Log::info($request->codeequipe);
+        // $response = $this->api->post('search-agence-web', [
+        //     'codeReseau' => 'ASSFIN'
+        // ]);
+        // $agenceByReseeaus = $response['dataAgence'] ?? [];
 
-        Log::info($agenceByReseeaus);
+        // Log::info($agenceByReseeaus);
 
-        $agence = collect($agenceByReseeaus)->firstWhere('CodeUnite', $request->codeequipe);
-        Log::info($agence);
+        // $agence = collect($agenceByReseeaus)->firstWhere('CodeUnite', $request->codeequipe);
+        // Log::info($agence);
 
-        if (!$agence) {
-            return response()->json([
-                'error' => 'Agence introuvable'
-            ], 404);
-        }
+        // if (!$agence) {
+        //     return response()->json([
+        //         'error' => 'Agence introuvable'
+        //     ], 404);
+        // }
 
-        $monLibelle = $agence['MonLibelle'] ?? null;
+        // $monLibelle = $agence['MonLibelle'] ?? null;
 
-        Log::info($monLibelle);
+        // Log::info($monLibelle);
 
         DB::beginTransaction();
         try {
@@ -212,14 +212,14 @@ class UserController extends Controller
                 'codepartenaire' => $request->codePart,
                 'partenaire' => $partenaire,
                 'codezone' => $request->codezone,
-                'codeequipe' => $agence['IdUnite'] ?? null, // id agence // equipe
+                // 'codeequipe' => $agence['IdUnite'] ?? null, // id agence // equipe
                 'sexe' => $request->sexe,
                 'nom' => $request->nom,
                 'prenom' => $request->prenom,
                 'datenaissance' => $request->datenaissance,
                 'profession' => $request->profession,
                 'agence' => $request->codeequipe,  // equipe es une aagence // code
-                'nomagence' => $agence['MonLibelle'] ?? null,
+                // 'nomagence' => $agence['MonLibelle'] ?? null,
                 'branche' => $request->branche,
                 'login' => $request->login,
                 'role' => $role,
