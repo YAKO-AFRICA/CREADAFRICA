@@ -10,8 +10,11 @@
         </p>
     </div>
 
+
+
     <!-- FORM -->
-    <form action="{{ route('prod.sante.update', $sante?->id) }}" method="POST" style="padding: 25px;" class="submitForm">
+    @if($sante)
+    <form action="{{ route('prod.sante.update', $sante->id) }}" method="POST" style="padding: 25px;" class="submitForm">
         @csrf
 
         <!-- CONSTANTES -->
@@ -155,4 +158,7 @@
         </div>
 
     </form>
+    @else
+    <p>Aucune donnée de santé à modifier.</p>
+    @endif
 </div>
